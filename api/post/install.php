@@ -28,11 +28,11 @@ if (!$ssh->login("root", $_GET['password'])) {
     }
     if ($stage == "3a") {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL3a' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
-        $return["data"] = htmlentities($ssh->exec('wget -O /etc/init.d/managemc http://api.alpha.managemc.com/scripts/managemc'));
+        $return["data"] = htmlentities($ssh->exec('wget -O /etc/init.d/managemc "http://api.alpha.managemc.com/managemc"'));
     }
     if ($stage == 4) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL4' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
-        $return["data"] = htmlentities($ssh->exec("chmod a+x /etc/init.d/managemc"));
+        $return["data"] = htmlentities($ssh->exec("chmod a+x /etc/init.d/managemc && (crontab -l ; echo '@reboot /etc/init.d/managemc start') | crontab -"));
     }
     if ($stage == 5) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL5' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
@@ -51,10 +51,11 @@ if (!$ssh->login("root", $_GET['password'])) {
         $return["data"] = htmlentities($ssh->exec("service managemc install"));
     }
     if ($stage == 9) {
-        $ssh->exec("service managemc stop");
+        $ssh->exec("service managemc start");
+		$ssh->exec("service managemc stop");
         $ssh->exec("sed -i 's/motd=A Minecraft Server/motd=Newly Installed Server VIA ManageMC/g' /home/minecraft/minecraft/server.properties");
         $ssh->exec("sed -i 's/server-ip=/server-ip=" . $_GET['ip'] . "/g' /home/minecraft/minecraft/server.properties");
-        $ssh->exec("service managemc start");
+        $ssh->exec("reboot");
         $result               = mysqli_query($con, "SELECT * FROM servers WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
         $row                  = mysqli_fetch_array($result);
         $result               = mysqli_query($con, "UPDATE servers SET STATUS='NEW' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");

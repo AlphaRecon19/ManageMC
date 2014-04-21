@@ -129,7 +129,7 @@ $(document).ready(function() {
             $('#Activity_Table').html(data);
           }
           else {
-			  $('#Activity_Table').html('Error Loading Data');
+			  $('#Activity_Table').html('Nothing Found!');
           }
        }
 	   
@@ -161,7 +161,7 @@ $(document).ready(function() {
             $('#Activity_Table').html(data);
           }
           else {
-			  $('#Activity_Table').html('Error Loading Data');
+			  $('#Activity_Table').html('Nothing Found!');
           }
        }
 	   

@@ -9,7 +9,6 @@ Succsess Value : 'Succsess'
 
 
 */
-error_reporting(0);
 include_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/mysql.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/log.php');
@@ -36,7 +35,7 @@ if ($num_rows_failed_logins >= $Max_Login_Errors_Per_IP) {
     $Email    = $_POST['Email'];
     $Password = $_POST['Password'];
     if ($_GET['type'] == "client") {
-        $file  = file_get_contents('http://api.alpha.managemc.com:8080/minecraft.php?user=' . $Email . '&pass=' . $Password, true);
+        $file  = file_get_contents('http://api.alpha.managemc.com/minecraft.php?user=' . $Email . '&pass=' . $Password, true);
         $array = json_decode($file);
         $var   = get_object_vars($array);
         if (empty($file)) {

@@ -80,7 +80,7 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
       
       <div class="modal-footer">
         <button type="submit" class="btn btn-success" id="add_server_check_go" name="add_server_check_go">GO</button>
-        <a href="/dashboard.php?page=Overview"><button type="button" class="btn btn-default btn-danger">Cancel</button></a>
+        <button type="button" class="btn btn-default btn-danger" onclick="history.go(-1);">Cancel</button>
         </div>
         </form>
     </div><!-- /.modal-content -->
@@ -140,7 +140,7 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
 </div>
       <div class="modal-body" style="width:400px; margin-left: auto ;  margin-right: auto ;"><center>
       
-      <p>To remove <b>ALL</b> data from this server and then remove all data associated to this server from the database click GO.</p><p>This will take about 1 minuet and is irreversible!</p>
+      <p>To remove <b>ALL</b> data from this server and then remove all data associated to this server from the database click GO.</p><p>This will take about 1 minute and is irreversible!</p>
       </div>
       
       <div class="modal-footer">
@@ -463,7 +463,7 @@ $(document).ready(function() {
             $('#listservers').html(data);
           }
           else {
-			  $('#listservers').html('Error Loading Data');
+			  $('#listservers').html('<center>We found no servres in the database. Why not add one <a href="server_management.php?page=AddServer">here</a></center>');
           }
        }
    });

@@ -14,7 +14,7 @@ while ($row = mysqli_fetch_array($result)) {
         $ms1      = explode(".", $ms);
         echo '|' . $TABLE_MS = $ms1[0];
     } else {
-        $TABLE_MS = 'offline';
+        $TABLE_MS = '0';
     }
     fclose($fp);
     $ssh = new Net_SSH2($row['IP']);

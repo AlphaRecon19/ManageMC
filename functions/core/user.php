@@ -96,7 +96,7 @@ function Username()
             return "Undefined";
         }
     } else {
-        header('location: /login.php?session=true');
+        return "Undefined";
         exit;
     }
 }
