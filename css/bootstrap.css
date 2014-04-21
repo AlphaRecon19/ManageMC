@@ -5597,7 +5597,7 @@ a.list-group-item.active:focus .list-group-item-text {
 }
 
 .panel {
-  min-width: 500px;
+  min-width: 620px;
   margin-bottom: 20px;
   padding:10px;
   background-color: #ffffff;

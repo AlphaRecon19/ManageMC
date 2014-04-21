@@ -37,7 +37,7 @@ Force_Admin();
     
   </head>
 
-  <body onload="on_load(), clock()">
+  <body>
 
     <div class="container">
 
@@ -123,8 +123,7 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
        
         
         <?php
-        exit; //Finish page 'Activity'
-    }
+        exit;     }
 	if ($page == "DeleteServer") {
         echo '<div class="container-fluid">';
         Render_Sidebar();
@@ -190,8 +189,7 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
        
         
         <?php
-        exit; //Finish page 'Activity'
-    }
+        exit;     }
     if ($page == "ManageServer") {
         echo '<div class="container-fluid">';
         Render_Sidebar();
@@ -199,21 +197,29 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <div class="panel panel-primary">
 
-          <div class="panel-heading"><h3 id="Server_IP"><img src="images/712.GIF" width="32" height="32"></h3></div>
+          <div class="panel-heading"><h3 id="Server_IP"><img src="images/712.GIF" width="32" height="32"> UID=<span id="UID_Table"><img src="images/712.GIF" width="32" height="32"></span></h3></div>
           <div class="panel-body">
-          <div class="table-responsive">
-            <table class="table table-striped">
+          <div style="color:#EEE;background:#222;width:380px;padding:20px;border-radius:15px;text-align: center; float:left;">
+          <div id="knobinner" style="position:relative;width:350px;margin:auto;float:left; display:none;"><div style="position:absolute;left:10px;top:10px"><input class="knob load0" data-bgcolor="#333" data-displayinput="false" data-fgcolor="#ffec03" data-height="300" data-max="100" data-min="0" data-thickness=".3" data-width="300"></div><div style="position:absolute;left:60px;top:60px;"><input class="knob load1" data-bgcolor="#333" data-displayinput="false" data-height="200" data-max="100" data-min="0" data-thickness=".45" data-width="200" id="datalol1"></div><div style="position:absolute;left:110px;top:110px"><input class="knob load2" data-bgcolor="#333" data-displayinput="false" data-fgcolor="rgb(127, 255, 0)" data-height="100" data-max="100" data-min="0" data-thickness=".7" data-width="100"></div></div><div id="newa" style="overflow:hidden;float:right;width:300px;height:310px;"></div><center id="knobtext" style="position:relative;bottom:0;padding-top:350px;margin:auto;color:#222;overflow:none; display:none;"><p><span style="color:#EEE;">Load avg: </span><span style="background-color:#ffec03"> 1 min:<span id="load0"></span></span><span style="background-color:#87CEEB"> 5 min: <span id="load1"></span></span><span style="background-color:rgb(127, 255, 0);"> 15 min: <span id="load2"></span></span></p></center><div style="clear:both"></div><br></div>
+          <div class="table-responsive" >
+            <table class="table tableright table-striped" style="width: 430px;">
 
               <tbody>
               	<tr>
-                	<td><center><b>Server UID</b> <span id="UID_Table"><img src="images/712.GIF" width="32" height="32"></span></center></td>
-                    <td><center><b>STATUS</b> <span id="STATUS_Table"><img src="images/712.GIF" width="32" height="32"></span></center></td>
+                	<td><center><b>STATUS</b></center></td>
+                    <td><center><span id="STATUS_Table"><img src="images/712.GIF" width="32" height="32"></span></center></td>
                 </tr>
                 <tr>
-                <td><center><b>IP</b> <span id="IP_Table"><img src="images/712.GIF" width="32" height="32"></span></center></td>
-                	<td><center><span class="glyphicon glyphicon-signal"></span> <b><span id="ms_Table"><img src="images/712.GIF" width="32" height="32"></span></b> ms</center></td>
-                    
-                	
+                	<td><center><b>IP</b></center></td>
+                	<td><center><span id="IP_Table"><img src="images/712.GIF" width="32" height="32"></span> <span class="glyphicon glyphicon-signal"></span><span id="ms_Table"><img src="images/712.GIF" width="32" height="32"></span></center></td>
+                </tr>
+                <tr>
+                	<td><center><b>Diskspace Used</b></center></td>
+                    <td><center><div class="progress">
+  <div class="progress-bar" role="progressbar" id="diskspaceb" style="width: 0%;">
+    <b><span id="diskspacevalue"></span></b>
+  </div>
+</div></center></td>
                 </tr>
                 
                 
@@ -275,37 +281,23 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
             
 			</div> <!-- End Panel -->
           </div>
-          
+		           
           
           
           <div class="panel panel-primary">
           <div class="panel-heading"><h3>Server Load</div>
           <div class="panel-body">        
           
-          <center>
-        <div class="demo" style="color:#EEE;background:#222;height:400px;width:400px; padding:20px; border-radius:15px; text-align: center;">
-            <div style="position:relative;width:350px;margin:auto; float:left;">
-                <div style="position:absolute;left:10px;top:10px">
-                    <input class="knob load0" data-min="0" data-max="100" data-bgColor="#333" data-fgColor="#ffec03" data-displayInput=false data-width="300" data-height="300" data-thickness=".3">
-                </div>
-                <div style="position:absolute;left:60px;top:60px;">
-                    <input id="datalol1" class="knob load1" data-min="0" data-max="100" data-bgColor="#333" data-displayInput=false data-width="200" data-height="200" data-thickness=".45">
-                </div>
-                <div style="position:absolute;left:110px;top:110px">
-                    <input class="knob load2" data-min="0" data-max="100" data-bgColor="#333" data-fgColor="rgb(127, 255, 0)" data-displayInput=false data-width="100" data-height="100" data-thickness=".7">
-                </div>
-                 
-            </div>
-            <div id="newa" style="overflow:hidden; float:right; width:300px; height:310px;" readonly></div>
-            <center style="position:relative; bottom:0; padding-top:300px; margin:auto; color:#222; overflow:none;">
-        <p><span style="color:#EEE;">Load avg</span> <span style="background-color:#ffec03"> 1 min:<span id="load0"></span></span><span style="background-color:#87CEEB"> 5 min: <span id="load1"></span></span><span style="background-color:rgb(127, 255, 0);"> 15 min: <span id="load2"></span></span></p>
-        <div style="clear:both"></div>
-   
-        </center>
-            
-			</div> <!-- End Panel -->
-          </div>
           
+          <center><div class="content">
+			<div class="pane">
+				<div id="chartContainerLOAD" class="case-container" style="width: 90%; height: 440px;"></div>
+			</div>
+            </div></center>
+          
+            
+		</div> <!-- End Panel -->
+          </div>
           
           
 
@@ -399,153 +391,19 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
 </html>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="js/bootstrap.min.js" ></script>
-
-<script src="js/server_management_ManageServer.php?uid=<?php
-        echo $_GET['uid'];
-?>" ></script>
+<script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=load"></script>
+<script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=ms"></script>
+<script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=free"></script>
+<script src="js/server_management_ManageServer.php?uid=<?php echo $_GET['uid']; ?>" ></script>
 <script src="js/globalize.min.js"></script>
 <script src="js/dx.chartjs.js"></script>
-<script src="api/get/graph_server_used.php?uid=<?php
-        echo $_GET['uid'];
-?>"></script>
-<script src="api/get/graph_server_ping.php?uid=<?php
-        echo $_GET['uid'];
-?>"></script>
-<script>
-        function on_load() {
-            $(".load0").val('0').trigger("change");
-            $(".load1").val('0').trigger("change");
-            $(".load2").val('0').trigger("change");
-        }
-        function clock() {
-            var $load0 = $(".load0"),
-                $load1 = $(".load1"),
-                $load2 = $(".load2");
-				
-                     $.getJSON("load.php?uid=YTgwMTc1YTI1YzE1ZThiNDMxYmE1YmVhZGYyNThjMGM=",{mode: 1},function(jsonResult)
-      { 
-        var str='';
-        for(var i=0; i<jsonResult.length;i++)
-          {
-            load0_100 = jsonResult[i].load0_100;
-            load1_100 = jsonResult[i].load1_100;
-            load2_100 = jsonResult[i].load2_100;
-            
-            load0 = jsonResult[i].load0;
-            load1 = jsonResult[i].load1;
-            load2 = jsonResult[i].load2;
-            
-            time = jsonResult[i].time;
-            
-            var rnum = Math.max(load0, load1, load2);
-            
-            var rlength = '0';
-            var newnumber = Math.round(rnum * Math.pow(10, rlength)) / Math.pow(10, rlength);
-            newmax = (newnumber + 1) * 100;
-            if(rnum < 1)
-            {
-                newmax = '100';
-            }
-          }
-              
-    
-    
-    $('#load0').fadeOut(200, function() {});
-            $('#load1').fadeOut(200, function() {});
-            $('#load2').fadeOut(200, function() {});
-    $('.load0').trigger('configure',{"max":newmax,});
-    $('.load1').trigger('configure',{"max":newmax,});
-    $('.load2').trigger('configure',{"max":newmax,});
-    
-    
-     
-    
-            $load0.val(load0_100).trigger("change");
-            $load1.val(load1_100).trigger("change");
-            $load2.val(load2_100).trigger("change");
-			
-            $('#load0').html(load0);
-            $('#load1').html(load1);
-            $('#load2').html(load2);
-            
-            $('#load0').fadeIn(500, function() {});
-            $('#load1').fadeIn(500, function() {});
-            $('#load2').fadeIn(500, function() {});
-            
-            
-            setTimeout('clock()', 5000);
-            
-        
-      });
-            };
-        </script>
-        <script src="js/jquery.knob.js"></script>
-        <script>
-            $(function($) {
-
-                $(".knob").knob({
-                    change : function (value) {
-                        //console.log("change : " + value);
-                    },
-                    release : function (value) {
-                        //console.log(this.$.attr('value'));
-                        console.log("release : " + value);
-                    },
-                    cancel : function () {
-                        console.log("cancel : ", this);
-                    },
-                    draw : function () {
-
-                        // "tron" case
-                        if(this.$.data('skin') == 'tron') {
-
-                            var a = this.angle(this.cv)  // Angle
-                                , sa = this.startAngle          // Previous start angle
-                                , sat = this.startAngle         // Start angle
-                                , ea                            // Previous end angle
-                                , eat = sat + a                 // End angle
-                                , r = 1;
-
-                            this.g.lineWidth = this.lineWidth;
-
-                            this.o.cursor
-                                && (sat = eat - 0.3)
-                                && (eat = eat + 0.3);
-
-                            if (this.o.displayPrevious) {
-                                ea = this.startAngle + this.angle(this.v);
-                                this.o.cursor
-                                    && (sa = ea - 0.3)
-                                    && (ea = ea + 0.3);
-                                this.g.beginPath();
-                                this.g.strokeStyle = this.pColor;
-                                this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false);
-                                this.g.stroke();
-                            }
-
-                            this.g.beginPath();
-                            this.g.strokeStyle = r ? this.o.fgColor : this.fgColor ;
-                            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false);
-                            this.g.stroke();
-
-                            this.g.lineWidth = 2;
-                            this.g.beginPath();
-                            this.g.strokeStyle = this.o.fgColor;
-                            this.g.arc( this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
-                            this.g.stroke();
-
-                            return false;
-                        }
-                    }
-                });
-                
-            });
-        </script>
+<script src="js/jquery.knob.js"></script>
+<script>$(function(e){e(".knob").knob({draw:function(){if(this.$.data("skin")=="tron"){var e=this.angle(this.cv),t=this.startAngle,n=this.startAngle,r,i=n+e,s=1;this.g.lineWidth=this.lineWidth;this.o.cursor&&(n=i-.3)&&(i=i+.3);if(this.o.displayPrevious){r=this.startAngle+this.angle(this.v);this.o.cursor&&(t=r-.3)&&(r=r+.3);this.g.beginPath();this.g.strokeStyle=this.pColor;this.g.arc(this.xy,this.xy,this.radius-this.lineWidth,t,r,false);this.g.stroke()}this.g.beginPath();this.g.strokeStyle=s?this.o.fgColor:this.fgColor;this.g.arc(this.xy,this.xy,this.radius-this.lineWidth,n,i,false);this.g.stroke();this.g.lineWidth=2;this.g.beginPath();this.g.strokeStyle=this.o.fgColor;this.g.arc(this.xy,this.xy,this.radius-this.lineWidth+1+this.lineWidth*2/3,0,2*Math.PI,false);this.g.stroke();return false}}})})
+</script>
         
         
         <?php
-        exit; //Finish page 'Activity'
-    }
+        exit;     }
     if ($page == "ListServer") {
         echo '<div class="container-fluid">';
         Render_Sidebar();
@@ -561,13 +419,11 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
                 <tr>
                   <th><center>UID</center></th>
                   <th><center>IP</center></th>
-                  <th><center>Client</center></th>
                   <th><center>Edit</center></th>
                 </tr>
               </thead>
               <tbody id="listservers">
 				<tr>
-                <td><center><img src="images/712.GIF" width="32" height="32"></center></td>
                 <td><center><img src="images/712.GIF" width="32" height="32"></center></td>
                 <td><center><img src="images/712.GIF" width="32" height="32"></center></td>
                 <td><center><img src="images/712.GIF" width="32" height="32"></center></td>
@@ -617,6 +473,5 @@ $(document).ready(function() {
         
         
         <?php
-        exit; //Finish page 'Activity'
-    }
+        exit;     }
 }

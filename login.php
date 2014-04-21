@@ -1,5 +1,6 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/core.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 Check_Force_SSL();
 if (Check_Login_Value() == 1) {
     header('location: /dashboard.php?page=Overview');

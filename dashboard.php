@@ -1,5 +1,4 @@
 <?php
-include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/log.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/core.php');
 Check_Force_SSL();
@@ -21,7 +20,6 @@ Force_Admin();
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/dashboard.css" rel="stylesheet">
-    <link href="/css/signin.css" rel="stylesheet">
     
   </head>
 
@@ -187,7 +185,7 @@ Render_Sidebar();
 ?>
               <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <div class="panel panel-primary">
-          <div class="row placeholders">
+          <div class="row placeholders" style="margin-bottom: 0px;">
           <div class="col-xs-6 col-sm-3 placeholder">
               <h1 id="servers"><center><img src="images/712.GIF" width="32" height="32"></center></h1>
               <h4>Server(s)</h4>

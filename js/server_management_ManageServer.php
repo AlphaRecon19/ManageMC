@@ -50,6 +50,9 @@ $(document).ready(function() {
 			$( "#generate-structures_Table2" ).html(data['generate-structures']);
 			$( "#view-distance_Table2" ).html(data['view-distance']);
 			$( "#motd_Table2" ).html(data['motd']);
+            
+            $("#diskspaceb").css("width", data['diskfreep']);
+            $("#diskspacevalue").html(data['diskfreep']);
 			  
        }
 	   
@@ -57,3 +60,59 @@ $(document).ready(function() {
    });
    
    });
+$(document).ready(function() {
+	on_load();
+});
+        function on_load() {
+            $(".load0").val('0').trigger("change");
+            $(".load1").val('0').trigger("change");
+            $(".load2").val('0').trigger("change");
+				clock();
+        }
+        function clock() {
+            var $load0 = $(".load0"),
+                $load1 = $(".load1"),
+                $load2 = $(".load2");
+				
+      $.getJSON("api/get/server_load.php?uid=<?php echo $_GET['uid']; ?>",{mode: 1},function(jsonResult)
+      {
+        var str='';
+        for(var i=0; i<jsonResult.length;i++)
+          {
+            load0_100 = jsonResult[i].load0_100;
+            load1_100 = jsonResult[i].load1_100;
+            load2_100 = jsonResult[i].load2_100;
+            load0 = jsonResult[i].load0;
+            load1 = jsonResult[i].load1;
+            load2 = jsonResult[i].load2;
+            time = jsonResult[i].time;
+            var rnum = Math.max(load0, load1, load2);
+            var rlength = '0';
+            var newnumber = Math.round(rnum * Math.pow(10, rlength)) / Math.pow(10, rlength);
+            newmax = (newnumber + 1) * 100;
+            if(rnum < 1)
+            {
+                newmax = '100';
+            }
+          }
+            $('#load0').fadeOut(200, function() {});
+    		$('#load1').fadeOut(200, function() {});
+    		$('#load2').fadeOut(200, function() {});
+    		$('.load0').trigger('configure',{"max":newmax,});
+    		$('.load1').trigger('configure',{"max":newmax,});
+    		$('.load2').trigger('configure',{"max":newmax,});
+            $load0.val(load0_100).trigger("change");
+            $load1.val(load1_100).trigger("change");
+            $load2.val(load2_100).trigger("change");			
+            $('#load0').html(load0);
+            $('#load1').html(load1);
+            $('#load2').html(load2);            
+            $('#load0').fadeIn(500, function() {});
+            $('#load1').fadeIn(500, function() {});
+            $('#load2').fadeIn(500, function() {});   
+            $("#knobinner").css("display", "block");
+            $("#knobtext").css("display", "block"); 
+            setTimeout('clock()', 5000);        
+        
+      });
+            };

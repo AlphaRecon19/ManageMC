@@ -15,7 +15,7 @@ if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
         $ROOTPASSWORD           = $row['ROOTPASSWORD'];
         $server["STATUS"]       = $row['STATUS'];
     }
-    mysqli_close($con);
+    
     $ssh = new Net_SSH2($ip);
     if (!$ssh->login("root", $ROOTPASSWORD)) {
         $server['SERVERLOGIN'] = 'NO';
@@ -24,6 +24,10 @@ if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
         $server['API_STATUS']  = 'YES';
         $raw                   = $ssh->exec("cat /home/minecraft/minecraft/server.properties");
         $MOTD                  = $ssh->exec("tail -1 /home/minecraft/minecraft/server.properties");
+		$scr                  = $ssh->exec("df -H | grep G");
+		$new = preg_replace('/\s+/', '=', $scr);
+		$aaaa = explode("=", $new);
+		$server['diskfreep'] = $aaaa[4];
         $a                     = explode("2014", $raw);
         $b                     = substr($a[1], 1);
         $c                     = explode(" ", $b);
@@ -35,20 +39,17 @@ if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
                 $server[$e[0]] = 'EMPTY VALUE';
             }
         }
-        $f              = substr($MOTD, 0, -2);
+        $f              = $MOTD;
         $g              = explode("=", $f);
         $server['motd'] = $g[1];
+		$result = mysqli_query($con, "SELECT * FROM server_data WHERE SERVER_UID='" . $_GET['uid'] . "' ORDER BY ID DESC LIMIT 1");
+while ($row = mysqli_fetch_array($result)) {
+
+$server['ms'] = $row['MS'];
+}
+mysqli_close($con);
     }
-    $starttime = microtime(true);
-    if ($fp = fsockopen($ip, $server['server-port'], $errCode, $errStr, 1)) {
-        $stoptime     = microtime(true);
-        $ms           = ($stoptime - $starttime) * 1000;
-        $ms1          = explode(".", $ms);
-        $server['ms'] = $ms1[0];
-    } else {
-        $server['ms'] = "-";
-    }
-    fclose($fp);
+
 } else {
     Add_log_entry("UID not supplied", "");
     mysqli_close($con);
