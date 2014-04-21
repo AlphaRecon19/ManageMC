@@ -53,6 +53,8 @@ $(document).ready(function() {
             
             $("#diskspaceb").css("width", data['diskfreep']);
             $("#diskspacevalue").html(data['diskfreep']);
+            $("#disktotal").html(data['disktotal']);
+            $("#diskused").html(data['diskused']);
 			  
        }
 	   

@@ -27,6 +27,8 @@ if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
 		$scr                  = $ssh->exec("df -H | grep G");
 		$new = preg_replace('/\s+/', '=', $scr);
 		$aaaa = explode("=", $new);
+		$server['disktotal'] = $aaaa[1];
+		$server['diskused'] = $aaaa[2];
 		$server['diskfreep'] = $aaaa[4];
         $a                     = explode("2014", $raw);
         $b                     = substr($a[1], 1);

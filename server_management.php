@@ -214,14 +214,16 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
                 	<td><center><span id="IP_Table"><img src="images/712.GIF" width="32" height="32"></span> <span class="glyphicon glyphicon-signal"></span><span id="ms_Table"><img src="images/712.GIF" width="32" height="32"></span></center></td>
                 </tr>
                 <tr>
-                	<td><center><b>Diskspace Used</b></center></td>
-                    <td><center><div class="progress">
-  <div class="progress-bar" role="progressbar" id="diskspaceb" style="width: 0%;">
-    <b><span id="diskspacevalue"></span></b>
-  </div>
-</div></center></td>
+                	<td><center><b>Diskspace</b></center></td>
+                    <td><center><div class="progress"><div class="progress-bar" role="progressbar" id="diskspaceb" style="width: 0%;">
+                    	<b><span id="diskspacevalue"></span></b></div></div></center>
+                    	<center><span id="diskused"></span> of <span id="disktotal"></span></center>
+                    </td>
                 </tr>
-                
+                <tr>
+                	<td></td>
+                    <td></td>
+                </tr>
                 
               </tbody>
             </table>
@@ -232,8 +234,9 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
           <div class="panel panel-primary">
           <div class="panel-heading"><h3>Command Center</div>
           <div class="panel-body">
-          <div class="alert alert-danger" id="NewWarning" style="display:none">
-  		  <strong>Warning!</strong> This server still needs to be assigned to a client. Do this now!<span class="glyphicon glyphicon-warning-sign" style="float:right;"></span>
+          <div class="alert alert-danger" id="NewWarning" style="display:none; height:100px;">
+  		  <strong>Warning!</strong> This server still needs to be assigned to a client. Do this now!<center id="NewWarningButton"><button class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-user"></span> Assign To Client</button></center>
+          
           </div>          
           <div class="table-responsive">
             <table class="table">
@@ -244,10 +247,8 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
                     <td><center><button class="btn btn-danger btn-lg"><i class="glyphicon glyphicon-stop"></i> Stop</button></center></td>
                     <td><center><button class="btn btn-info btn-lg"><i class="glyphicon glyphicon-refresh"></i> Update</button></center></td>
                 	<td><center><a href="?page=DeleteServer&uid=<?php echo $_GET['uid']; ?>"><button class="btn btn-danger btn-lg"><i class="glyphicon glyphicon-trash"></i> Delete</button></a></center></td>
-                    <td id="NewWarningButton" style="display:none"><center><button class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-user"></span> Assign To Client</button></center></td>
                 </tr>
-                
-                
+                               
               </tbody>
             </table>
             </div>
