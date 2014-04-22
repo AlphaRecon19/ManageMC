@@ -25,16 +25,6 @@ Force_Admin();
     <link href="/css/dashboard.css" rel="stylesheet">
     <link href="/css/signin.css" rel="stylesheet">
     
-    <style>
-	.tableleft {
-		float:left;
-	}
-	.tableright {
-		float:right;
-	}
-</style>
-    
-    
   </head>
 
   <body>
@@ -118,7 +108,7 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
   </body>
 </html>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="js/bootstrap.min.js" ></script>
+<script src="js/bootstrap.js" ></script>
 <script src="js/server_management_AddServer.js" ></script>
        
         
@@ -184,7 +174,7 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
   </body>
 </html>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="js/bootstrap.min.js" ></script>
+<script src="js/bootstrap.js" ></script>
 <script src="js/server_management_DeleteServer.js" ></script>
        
         
@@ -391,16 +381,14 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
   </body>
 </html>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="js/bootstrap.min.js" ></script>
+<script src="js/bootstrap.js" ></script>
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=load"></script>
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=ms"></script>
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=free"></script>
 <script src="js/server_management_ManageServer.php?uid=<?php echo $_GET['uid']; ?>" ></script>
 <script src="js/globalize.min.js"></script>
 <script src="js/dx.chartjs.js"></script>
-<script src="js/jquery.knob.js"></script>
-<script>$(function(e){e(".knob").knob({draw:function(){if(this.$.data("skin")=="tron"){var e=this.angle(this.cv),t=this.startAngle,n=this.startAngle,r,i=n+e,s=1;this.g.lineWidth=this.lineWidth;this.o.cursor&&(n=i-.3)&&(i=i+.3);if(this.o.displayPrevious){r=this.startAngle+this.angle(this.v);this.o.cursor&&(t=r-.3)&&(r=r+.3);this.g.beginPath();this.g.strokeStyle=this.pColor;this.g.arc(this.xy,this.xy,this.radius-this.lineWidth,t,r,false);this.g.stroke()}this.g.beginPath();this.g.strokeStyle=s?this.o.fgColor:this.fgColor;this.g.arc(this.xy,this.xy,this.radius-this.lineWidth,n,i,false);this.g.stroke();this.g.lineWidth=2;this.g.beginPath();this.g.strokeStyle=this.o.fgColor;this.g.arc(this.xy,this.xy,this.radius-this.lineWidth+1+this.lineWidth*2/3,0,2*Math.PI,false);this.g.stroke();return false}}})})
-</script>
+<script src="js/knob.js"></script>
         
         
         <?php
@@ -448,7 +436,7 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
   </body>
 </html>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="js/bootstrap.min.js" ></script>
+<script src="js/bootstrap.js" ></script>
 
 <script>
 $(document).ready(function() {

@@ -25,6 +25,7 @@ if (!isset($_GET['type'])) {
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
     <link href="/css/signin.css" rel="stylesheet">
     
   </head>
@@ -107,7 +108,7 @@ if (isset($_GET['type']) && $_GET['type'] == 'admin') {
   </body>
 </html>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="js/bootstrap.min.js" ></script>
+<script src="js/bootstrap.js" ></script>
 <script>
 $(document).ready(function() {
   $('#form-signin').submit(function(e) {
