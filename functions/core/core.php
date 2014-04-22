@@ -15,7 +15,7 @@ return time();
 
 
 function Check_Force_SSL () {
-global $Force_SSL;
+global $Force_SSL,$ManageMC_Domain;
 if ($Force_SSL == TRUE)
 {
 if ( isset($_SERVER['HTTPS']) ) {
@@ -25,11 +25,17 @@ if ( isset($_SERVER['HTTPS']) ) {
            return true;//SSL is being used
    } elseif ( isset($_SERVER['SERVER_PORT']) && ( '443' ==
 $_SERVER['SERVER_PORT'] ) ) {
-       return true;return true;
+       return true;
    }
    header('location: https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'');
    return false;	
 }
+//Check that we are on the correct domain
+if ($ManageMC_Domain == $_SERVER['HTTP_HOST']){
+       return true;
+   } else{
+     header('location: http://'.$ManageMC_Domain.$_SERVER['REQUEST_URI'].'');  
+   }
 	
 }
 

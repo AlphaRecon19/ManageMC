@@ -10,4 +10,5 @@
 		$Max_Login_Errors_Per_IP = 7;
 		$Max_Login_Errors_Reset = 60; //Time in seconds
 		date_default_timezone_set('Europe/London');
+		$ManageMC_Domain = "alpha.managemc.com"; //The domain where managemc is located. (Without http(s)://)
 ?>
