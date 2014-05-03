@@ -16,7 +16,7 @@ function Add_log_entry($message, $session)
     $result = mysqli_query($con, "INSERT INTO `activity_log` (`UID`, `TimeStamp`, `IP`, `User`, `Message`) VALUES (NULL, '" . time() . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . $username . "', '" . $message . "');");
 	
 	
-	if($result)
+	if(!$result)
 	{
 		return mysqli_error();
 	}

@@ -1,9 +1,9 @@
 <?php
 $starttime = microtime(true);
-error_reporting(1);
+//error_reporting(1);
+include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/mysql.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/log.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/mysql.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/lib/phpseclib/Net/SSH2.php');
 if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1)
 {
@@ -45,8 +45,7 @@ if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1)
         $ms1      = explode(".", $ms);
         $ms2      = substr($ms1[1], 0, 2);
         $time     = $server['ms'] = $ms1[0] . '.' . $ms2;
-        Add_log_entry("Server", "");
-        Add_log_entry("UID not suppliedaaaaaa", "");
+        Add_log_entry("Server Restarted");
     }
     
 }

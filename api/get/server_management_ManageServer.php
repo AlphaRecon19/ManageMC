@@ -53,7 +53,7 @@ mysqli_close($con);
     }
 
 } else {
-    Add_log_entry("UID not supplied", "");
+    Add_log_entry("UID not supplied");
     mysqli_close($con);
     $return["UID"]          = "NULL";
     $return["IP"]           = "NULL";

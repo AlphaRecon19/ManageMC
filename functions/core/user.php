@@ -69,9 +69,21 @@ function Force_Admin()
     } else {
     }
 }
-function Username()
+function Username($session)
 {
 	global $con;
+	if (isset($session)) {
+        $cookie_session = $session;
+        $result         = mysqli_query($con, "SELECT * FROM admin_users WHERE session='$cookie_session'");
+        $num_rows       = mysqli_num_rows($result);
+        if ($num_rows == 1) {
+            while ($row = mysqli_fetch_array($result)) {
+                return $row['Username'];
+            }
+        } else {
+            return 0;
+        }
+    }
     if (isset($_COOKIE['admin_session']) && !empty($_COOKIE['admin_session'])) {
         $cookie_session = $_COOKIE['admin_session'];
         $result         = mysqli_query($con, "SELECT * FROM admin_users WHERE session='$cookie_session'");

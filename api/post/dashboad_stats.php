@@ -36,6 +36,7 @@ function status()
     $return["server_online"] = $num_rowsa;
     $return["open_ticket"]   = rand(23, 73);
     $return["client"]        = rand(3, 433);
+	$return["players"]        = rand(0, 1000);
     $result                  = mysqli_query($con, "SELECT * FROM servers");
     $num_rows                = mysqli_num_rows($result);
     $return["servers"]       = $num_rows;

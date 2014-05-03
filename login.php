@@ -1,8 +1,10 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/core.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/log.php');
 Check_Force_SSL();
 if (Check_Login_Value() == 1) {
+	Add_log_entry("Auto Login");
     header('location: /dashboard.php?page=Overview');
 }
 if (!isset($_GET['type'])) {
@@ -133,7 +135,7 @@ if ($type !== "admin") {
        success: function(data)
        {
 		   
-          if (data === 'Succsess') {
+          if (data.data == 'succsess') {
 			$('#welcome_back').toggle();
 			<?php
 if ($type !== "admin") {
@@ -146,11 +148,11 @@ if ($type !== "admin") {
           }
 		  
           else {
-			  if (data === 'loginblocked') {
+			  if (data.data == 'loginblocked') {
             window.location = '/ipbanned.php?type=loginblocked';
           }
 			  $('#loaderImage').toggle();
-			  $('#error_code').html(data);
+			  $('#error_code').html(data.data);
 			  $('#myModal').modal('show');
           }
        }
