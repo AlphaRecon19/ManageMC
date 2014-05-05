@@ -76,7 +76,7 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
         </div>
     </div>
 
-    <div class="col-md-12">
+    <div class="col-md-12" style="margin-left: -12px;">
         <div class="panel panel-danger">
             <!-- Default panel contents -->
             <div class="panel-heading">Panel heading</div>

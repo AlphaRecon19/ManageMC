@@ -40,7 +40,7 @@ function Check_Force_SSL()
 function Render_Sidebar()
 {
     $page = $_SERVER['REQUEST_URI'];
-    echo '<div class="container-fluid" style="width:99.30%;">
+    echo '<div class="container-fluid" style="width:97.5%;">
       <div class="col-md-2" style="padding-left:25px; background-color: #FFF;">
           <ul class="nav nav-sidebar">
           	<h3>Dashboard</h3>
