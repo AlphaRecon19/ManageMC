@@ -25,6 +25,7 @@ if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
         $raw                   = $ssh->exec("cat /home/minecraft/minecraft/server.properties");
         $MOTD                  = $ssh->exec("tail -1 /home/minecraft/minecraft/server.properties");
 		$scr                  = $ssh->exec("df -H | grep G");
+		$mcsize                  = $ssh->exec("du -h -sh /home/minecraft/minecraft/");
 		$new = preg_replace('/\s+/', '=', $scr);
 		$aaaa = explode("=", $new);
 		$server['disktotal'] = $aaaa[1];
@@ -44,6 +45,10 @@ if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
         $f              = $MOTD;
         $g              = explode("=", $f);
         $server['motd'] = $g[1];
+		$mcsizea            = explode("/", $mcsize);
+		$server['mcsize'] = str_replace("\t", "", $mcsizea[0]);
+		
+		
 		$result = mysqli_query($con, "SELECT * FROM server_data WHERE SERVER_UID='" . $_GET['uid'] . "' ORDER BY ID DESC LIMIT 1");
 while ($row = mysqli_fetch_array($result)) {
 
@@ -59,6 +64,7 @@ mysqli_close($con);
     $return["IP"]           = "NULL";
     $return["ROOTPASSWORD"] = "NULL";
     $return["STATUS"]       = "NULL";
+	$server['$mcsize']      = "NULL";
     $server['API_STATUS']   = 'NO';
 }
 header('Content-Type: application/json');

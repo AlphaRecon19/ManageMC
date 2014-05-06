@@ -157,10 +157,11 @@ function Render_Top($name)
 
 function Render_Footer()
 {
-    echo '</div><!-- /container -->
+    echo "</div><!-- /container -->
 </body>
 </html>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="js/bootstrap.js"></script>';
+<script src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+<script>window.jQuery || document.write('<script src='js/jquery.min.js'>\x3C/script>')</script>
+<script src='js/bootstrap.js'></script>";
 }
 ?>

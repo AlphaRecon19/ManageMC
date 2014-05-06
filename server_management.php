@@ -171,9 +171,22 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
             </td>
             </tr>
             <tr>
-                <td></td>
-                <td></td>
-            </tr>
+                                <td>
+                                    <center><b>World Size</b>
+                                    </center>
+                                </td>
+                                <td>
+                                    <center>
+                                        <span
+                                        id="STATUS_WorldSize">
+                                            <img
+                                            src="images/712.GIF"
+                                            width="32"
+                                            height="32">
+                                                </span>
+                                    </center>
+                                </td>
+                            </tr>
 
             </tbody>
             </table>

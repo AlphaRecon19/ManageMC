@@ -14,13 +14,16 @@ while ($row = mysqli_fetch_array($result)) {
         $ms1      = explode(".", $ms);
         echo '|' . $TABLE_MS = $ms1[0];
     } else {
-        $TABLE_MS = '0';
+        $TABLE_MS = '-1';
     }
     fclose($fp);
     $ssh = new Net_SSH2($row['IP']);
     if (!$ssh->login("root", $row['ROOTPASSWORD'])) {
-        echo $TABLE_RAMFREE = '0';
+        echo $TABLE_RAMFREE = '-1';
     }
+	
+	echo "|" .$players = $ssh->exec("service managemc command list") . "|";
+	
 	
 	$a = $ssh->exec("cat /proc/loadavg");
 	$b = explode(" ",$a);
