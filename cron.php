@@ -2,6 +2,7 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/log.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/core.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/lib/phpseclib/Net/SSH2.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/file.php');
 date_default_timezone_set('Europe/London');
 $con    = mysql_mysqli_connect();
 $result = mysqli_query($con, "SELECT * FROM servers");
@@ -35,5 +36,18 @@ while ($row = mysqli_fetch_array($result)) {
     $ms1 = explode(".", $ip4);
     echo '|' . time() . '|' . $TABLE_RAMFREE = $ms1[0];
     mysqli_query($con, "INSERT INTO server_data (SERVER_UID, RAM_FREE, TIMESTAMP, LOAD1, MS) VALUES ('" . $UID . "', '" . $TABLE_RAMFREE . "', '" . time() . "', '" . $load . "', '" . $TABLE_MS . "')");
+
+
+
+if(Check_File($UID,"/home/minecraft/minecraft/server.properties") == 1)
+{
+	Delete_File($UID,"/home/minecraft/minecraft/server.properties");
+	Download_FIle_FTP($row['IP'],"minecraft","rand",'/home/minecraft/minecraft/server.properties',$UID);
+}
+else{
+Download_FIle_FTP($row['IP'],"minecraft","rand",'/home/minecraft/minecraft/server.properties',$UID);
+echo 1;
+}
+
 }
 ?>

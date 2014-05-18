@@ -3,6 +3,11 @@ error_reporting(0);
 include_once($_SERVER['DOCUMENT_ROOT'] . '/lib/phpseclib/Net/SSH2.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/log.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/file.php');
+
+
+
+
 if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
     include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/mysql.php');
     $con    = mysql_mysqli_connect();
@@ -22,9 +27,7 @@ if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
     } else {
         $server['SERVERLOGIN'] = 'YES';
         $server['API_STATUS']  = 'YES';
-        $raw                   = $ssh->exec("cat /home/minecraft/minecraft/server.properties");
-        $MOTD                  = $ssh->exec("tail -1 /home/minecraft/minecraft/server.properties");
-		$scr                  = $ssh->exec("df -H | grep G");
+		$scr                  =  $ssh->exec("df -H | grep G");
 		$mcsize                  = $ssh->exec("du -h -sh /home/minecraft/minecraft/");
 		$new = preg_replace('/\s+/', '=', $scr);
 		$aaaa = explode("=", $new);
@@ -35,16 +38,18 @@ if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
         $b                     = substr($a[1], 1);
         $c                     = explode(" ", $b);
         $b                     = preg_split('/\s+/', $c[0]);
-        foreach ($b as $value) {
+		$file = Get_Path($server["UID"],"/home/minecraft/minecraft/server.properties");
+		$lines = file($file);
+        foreach ($lines as $value) {
             $e             = explode("=", $value);
             $server[$e[0]] = $e[1];
             if (empty($server[$e[0]])) {
                 $server[$e[0]] = 'EMPTY VALUE';
             }
         }
-        $f              = $MOTD;
-        $g              = explode("=", $f);
-        $server['motd'] = $g[1];
+        //$f              = $MOTD;
+        //$g              = explode("=", $f);
+        //$server['motd'] = $g[1];
 		$mcsizea            = explode("/", $mcsize);
 		$server['mcsize'] = str_replace("\t", "", $mcsizea[0]);
 		

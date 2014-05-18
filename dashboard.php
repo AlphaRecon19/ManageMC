@@ -91,7 +91,7 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
 <?php
 render_footer();
 ?>
-<script src="js/dashboard.js"></script>
+<script type="text/javascript" src="/js/dashboard.js"></script>
 <?php } if ($page == "Activity") {
 	 ?>
  <!-- Modal -->

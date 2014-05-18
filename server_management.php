@@ -273,8 +273,8 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
 		<div class="col-md-6">
         <div class="panel panel-info">
             <div class="panel-heading"><h3>server.properties</h3>
-            <button class="btn btn-info btn-lg pull-right"
-            style="margin-top: -45px;"><span class="glyphicon glyphicon glyphicon-pencil"></span> EDIT</button>
+            <a href="/editfile.php?uid=<?php echo $_GET['uid']; ?>&filepath=/home/minecraft/minecraft/server.properties"><button class="btn btn-info btn-lg pull-right"
+            style="margin-top: -45px;"><span class="glyphicon glyphicon glyphicon-pencil"></span> EDIT</button></a>
         </div>
         <div class="panel-body">
             <div class="table-responsive">
@@ -630,13 +630,14 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
         <?php
 render_footer();
 		?>
+<script src="js/server_management_ManageServer.php?uid=<?php echo $_GET['uid']; ?>" ></script>
 <script src="js/globalize.min.js"></script>
 <script src="js/dx.chartjs.js"></script>
 <script src="js/knob.js"></script>
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=load"></script>
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=ms"></script>
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=free"></script>
-<script src="js/server_management_ManageServer.php?uid=<?php echo $_GET['uid']; ?>" ></script>
+
 		<?php
 		exit;
 		}
