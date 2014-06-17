@@ -20,7 +20,7 @@ if (isset($_GET['cmd']) && !empty($_GET['cmd']) && Check_Login_Value() == 1) {
     }
     if ($_GET['cmd'] == "activity_log_clear") {
         mysqli_query($con, 'TRUNCATE TABLE activity_log;');
-        Add_log_entry("Activity Log Cleared");
+        Add_log_entry("Activity Log Cleared", "System");
         echo 'done';
         mysqli_close($con);
         exit;

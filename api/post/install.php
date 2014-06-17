@@ -20,7 +20,7 @@ if (!$ssh->login("root", $_GET['password'])) {
     }
     if ($stage == 2) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL2' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
-        $return["data"] = htmlentities($ssh->exec("yum install screen nano wget java-1.7.0-openjdk -y"));
+        $return["data"] = htmlentities($ssh->exec("yum install screen nano wget java-1.7.0-openjdk vsftpd -y"));
     }
     if ($stage == 3) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL3' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
@@ -32,7 +32,10 @@ if (!$ssh->login("root", $_GET['password'])) {
     }
     if ($stage == 4) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL4' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
-        $return["data"] = htmlentities($ssh->exec("chmod a+x /etc/init.d/managemc && (crontab -l ; echo '@reboot /etc/init.d/managemc start') | crontab -"));
+        $return["data"] = htmlentities($ssh->exec("sed '/root/d' /etc/vsftpd/ftpusers > /dev/null"));
+		$return["data"] .= htmlentities($ssh->exec("sed '/root/d' /etc/vsftpd/user_list"));
+		$return["data"] .= htmlentities($ssh->exec("chmod a+x /etc/init.d/managemc"));
+		$return["data"] .= htmlentities($ssh->exec("(crontab -l ; echo '@reboot /etc/init.d/managemc start') | crontab -"));
     }
     if ($stage == 5) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL5' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");

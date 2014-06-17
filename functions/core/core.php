@@ -150,6 +150,7 @@ function Render_Top($name)
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/dashboard.css" rel="stylesheet">
     <link href="/css/signin.css" rel="stylesheet">
+    <link rel="stylesheet" href="/lib/switchery/switchery.min.css">
 </head>
 
 <body>';

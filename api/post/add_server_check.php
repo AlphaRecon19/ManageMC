@@ -26,8 +26,16 @@ if ($num_rows !== 0) {
 }
 //Check if ip is valid
 if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE)) {
+	if ( ! filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE) )
+	{
+ 		echo 1;
+    	$ipt = 1;
+	}
+else
+{
     echo 0;
     $ipt = 0;
+}
 } else {
     echo 1;
     $ipt = 1;

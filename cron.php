@@ -39,15 +39,15 @@ while ($row = mysqli_fetch_array($result)) {
 
 
 
-if(Check_File($UID,"/home/minecraft/minecraft/server.properties") == 1)
-{
-	Delete_File($UID,"/home/minecraft/minecraft/server.properties");
-	Download_FIle_FTP($row['IP'],"minecraft","rand",'/home/minecraft/minecraft/server.properties',$UID);
-}
-else{
-Download_FIle_FTP($row['IP'],"minecraft","rand",'/home/minecraft/minecraft/server.properties',$UID);
-echo 1;
-}
+//if(Check_File($UID,"/home/minecraft/minecraft/server.properties") == 1)
+//{
+//	Delete_File($UID,"/home/minecraft/minecraft/server.properties");
+//	Download_File_FTP($row['IP'],"root",$row['ROOTPASSWORD'],'/home/minecraft/minecraft/server.properties',$UID,0);
+//}
+//else{
+//Download_File_FTP($row['IP'],"root",$row['ROOTPASSWORD'],'/home/minecraft/minecraft/server.properties',$UID,0);
+//echo 1;
+//}
 
 }
 ?>

@@ -201,30 +201,21 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
         <div class="panel-heading">
             <h3>Command Center</div>
           <div class="panel-body">
-          <div class="alert alert-danger" id="NewWarning" style="display:none; height:100px;">
-  		  <strong>Warning!</strong> This server still needs to be assigned to a client. Do this now!<center id="NewWarningButton"><button class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-user"></span> Assign To Client</button></center>
-          
+          <div class="alert alert-danger" id="NewWarning" style="display:none;">
+  		  <strong>Warning!:</strong> This server still needs to be assigned to a client. Here is the <button class="btn btn-warning"><span class="glyphicon glyphicon-user"></span> Claim URL</button>
           </div>          
-          <div class="table-responsive">
-            <table class="table">
-
-              <tbody>
-              	<tr>
-                	<td><center><button class="btn btn-success btn-lg"><span class="glyphicon glyphicon-play"></span> Start</button></center></td>
-                    <td><center><button class="btn btn-danger btn-lg"><i class="glyphicon glyphicon-stop"></i> Stop</button></center></td>
-                    <td><center><button class="btn btn-info btn-lg"><i class="glyphicon glyphicon-refresh"></i> Update</button></center></td>
-                	<td><center><a href="?page=DeleteServer&uid=<?php echo $_GET['uid']; ?>"><button class="btn btn-danger btn-lg"><i class="glyphicon glyphicon-trash"></i> Delete</button></a></center></td>
-                </tr>
-                               
-              </tbody>
-            </table>
-            </div>
+          <button id="control_start" class="btn btn-success" disabled="disabled"><span class="glyphicon glyphicon-play"></span> Start</button>
+<button id="control_stop" class="btn btn-danger" disabled="disabled"><i class="glyphicon glyphicon-stop"></i> Stop</button>
+<button id="control_restart" class="btn btn-info" disabled="disabled"><i class="glyphicon glyphicon-refresh"></i> Restart</button>
+<button id="control_reboot" class="btn btn-danger" disabled="disabled"><i class="glyphicon glyphicon-refresh"></i> Reboot</button>
+<a href="?page=DeleteServer&uid=<?php echo $_GET['uid']; ?>"><button id="control_delete" class="btn btn-danger" disabled="disabled"><i class="glyphicon glyphicon-trash"></i> Delete</button></a><img src="/images/712.GIF" width="32" height="32" style="margin: 0; position: relative; float: right; display:none;" id="loading">
+Show Log: <input type="checkbox" class="js-switch" id="toggle_log" checked />
+Auto Refresh: <input type="checkbox" class="js-switch" id="auto_refresh" />
+Curently: <span id="status"></span><span><img src="/images/712.GIF" width="32" height="32" style="margin: 0; display:none;" id="status_img"> <button id="control_refresh" class="btn" disabled="disabled"><i class="glyphicon glyphicon-refresh"></i></button></span>
+<div id="last_rersault" style="background-color: #696969; color: #0F0; width: 100%; max-height: 330px; margin-top: 10px; font-weight: 500; padding: 5px; border-radius: 5px; overflow: scroll; overflow-x: auto;"></div>
         </div>
 		</div><!-- End Panel -->
 		</div><!-- End col-md-12 -->
-		
-		
-		
 		<div class="col-md-6">
         <div class="panel panel-info">
             <div class="panel-heading"><h3>Ram Free in the last 15 mins</div>
@@ -278,343 +269,7 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
         </div>
         <div class="panel-body">
             <div class="table-responsive">
-                <table class="table table-striped">
-
-                    <tbody>
-                        <tr>
-                            <td>
-                                <center><b>generator-settings </b>
-                                    <span
-                                    id="generator-settings_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>op-permission-level </b>
-                                    <span
-                                    id="op-permission-level_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>allow-nether </b>
-                                    <span
-                                    id="allow-nether_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <center><b>level-name </b>
-                                    <span
-                                    id="level-name_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>enable-query </b>
-                                    <span
-                                    id="enable-query_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>allow-flight </b>
-                                    <span
-                                    id="allow-flight_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <center><b>announce-player-achievements </b>
-                                    <span
-                                    id="announce-player-achievements_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>server-port </b>
-                                    <span
-                                    id="server-port_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>level-type </b>
-                                    <span
-                                    id="level-type_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <center><b>server-ip </b>
-                                    <span
-                                    id="server-ip_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>max-build-height </b>
-                                    <span
-                                    id="max-build-height_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>spawn-npcs </b>
-                                    <span
-                                    id="spawn-npcs_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <center><b>white-list </b>
-                                    <span
-                                    id="white-list_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>spawn-animals </b>
-                                    <span
-                                    id="spawn-animals_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>hardcore </b>
-                                    <span
-                                    id="hardcore_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <center><b>snooper-enabled </b>
-                                    <span
-                                    id="snooper-enabled_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>online-mode </b>
-                                    <span
-                                    id="online-mode_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>resource-pack </b>
-                                    <span
-                                    id="resource-pack_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <center><b>pvp </b>
-                                    <span
-                                    id="pvp_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>difficulty </b>
-                                    <span
-                                    id="difficulty_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>enable-command-block </b>
-                                    <span
-                                    id="enable-command-block_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <center><b>gamemode </b>
-                                    <span
-                                    id="gamemode_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>player-idle-timeout </b>
-                                    <span
-                                    id="player-idle-timeout_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>max-players </b>
-                                    <span
-                                    id="max-players_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <center><b>spawn-monsters </b>
-                                    <span
-                                    id="spawn-monsters_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>generate-structures </b>
-                                    <span
-                                    id="generate-structures_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                            <td>
-                                <center><b>view-distance </b>
-                                    <span
-                                    id="view-distance_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <center><b>motd </b>
-                                    <span
-                                    id="motd_Table2">
-                                        <img
-                                        src="images/712.GIF"
-                                        width="32"
-                                        height="32">
-                                            </span>
-                                </center>
-                            </td>
-                        </tr>
-
-
-
-
-                    </tbody>
-                </table>
+                Null
             </div>
         </div>
     </div>
@@ -630,14 +285,14 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
         <?php
 render_footer();
 		?>
-<script src="js/server_management_ManageServer.php?uid=<?php echo $_GET['uid']; ?>" ></script>
+<script src='lib/switchery/switchery.min.js'></script>
 <script src="js/globalize.min.js"></script>
 <script src="js/dx.chartjs.js"></script>
 <script src="js/knob.js"></script>
+<script src="js/server_management_ManageServer.php?uid=<?php echo $_GET['uid']; ?>" ></script>
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=load"></script>
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=ms"></script>
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=free"></script>
-
 		<?php
 		exit;
 		}
@@ -737,7 +392,7 @@ if ($page == "AddServer") {
 						<input type="text" class="form-control" style="height:45px;" id="ip" name="ip" required autocomplete="off" autofocus>
 					</div>
 					<div class="input-group">
-						<span class="input-group-addon">
+						<span class="input-group-addon" style="width: 94px;">
 						<span class="glyphicon glyphicon-asterisk">
 						</span>
 						ROOT <br/>
@@ -776,9 +431,7 @@ if ($page == "AddServer") {
 			</div>
 			<div class="modal-body" style="width:400px; margin-left: auto; margin-right: auto ;">
 				<center>
-				<p>
-					 ManageMC will now begin to install itself on the server. <br/>
-					This can take up to 3 minutes.
+				<p>ManageMC will now begin to install itself on the server. <br/>This can take up to 3 minutes. Please keep this tab open until everything completes
 				</p>
 				<p>
 					 Current Task: <span id="task">
@@ -822,7 +475,7 @@ if ($page == "DeleteServer") {
       <div class="modal-footer">
       <form id="delete_server" action="/api/post/delete_server.php?uid=<?php echo $_GET['uid']; ?>" method="post">
         <button type="submit" class="btn btn-success" id="delete_server_go" name="add_server_check_go">GO</button>
-        <a href="/dashboard.php?page=Overview"><button type="button" class="btn btn-default btn-danger">Cancel</button></a>
+        <a href="/server_management.php?page=ManageServer&uid=<?php echo $_GET['uid']; ?>"><button type="button" class="btn btn-default btn-danger">Cancel</button></a>
         </div>
         </form>
     </div><!-- /.modal-content -->

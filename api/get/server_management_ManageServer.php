@@ -4,10 +4,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/lib/phpseclib/Net/SSH2.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/log.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/file.php');
-
-
-
-
 if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
     include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/mysql.php');
     $con    = mysql_mysqli_connect();
@@ -43,7 +39,7 @@ if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
         foreach ($lines as $value) {
             $e             = explode("=", $value);
             $server[$e[0]] = $e[1];
-            if (empty($server[$e[0]])) {
+            if (empty($server[$e[0]]) || $server[$e[0]] == "\n") {
                 $server[$e[0]] = 'EMPTY VALUE';
             }
         }

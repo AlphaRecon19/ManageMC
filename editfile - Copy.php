@@ -18,7 +18,7 @@ $lines = file($file);
 }
 Check_Force_SSL();
 Check_Login();
-Render_Top("Edit File");
+Render_Top("Settings");
 Render_Navbar();
 Render_Sidebar();
 if (isset($_GET['page']) && !empty($_GET['page'])) {
@@ -48,26 +48,42 @@ $page = "Edit";
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<div class="row" style="padding-left:25px;">   
-    
-    <div class="col-md-10">
-        <div class="panel panel-info">
-            <!-- Default panel contents -->
-            <div class="panel-heading">Editing <?php echo $filepath; ?></div>
-            <div class="panel-body">
-            <form method="post" action="#" id="form_editfile" style="font-size: 16.4px;">
-    		<textarea id="savefiledata" name="content" rows="<?php echo count($lines); ?>" style="width:100%;"><?php
-			foreach ($lines as $line_num => $line) {echo "" . htmlspecialchars($line) . "<br />";}?></textarea>
-			
-            <br /><center>
-            <input type="submit" id="save_button" class="btn btn-default btn-success" name="save" value="Save" />
-            
-			<input type="reset" class="btn btn-default btn-warning"name="reset" value="Reset" /> </center></form>
-            <center><img src="images/712.GIF" width="32" height="32" id="activity_icon" style="display:none;"></center>
-            </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="alert alert-warning" style="display:none;" id="clear_activity_log_stage_1">
+  <strong>Working!</strong> Currently processing your request.<img src="images/712.GIF" width="16" height="16" style="float:right;">
+</div>
+
+        <div class="alert alert-success" style="display:none;" id="clear_activity_log_stage_2">
+  <strong>Done!</strong> You request has finished.<span class="glyphicon glyphicon-ok" style="float:right;"></span>
+</div>
+        <div class="panel panel-primary">
+
+          <div class="panel-heading"><h3>Change Your Password</h3><!--<button class="btn btn-danger btn-lg pull-right" data-toggle="modal" data-target="#myModal" style="margin-top: -45px;"><span class="glyphicon glyphicon-trash"></span> Clear Log</button>--></div>
+          <div class="panel-body">
+          <p>So you want to change your password?<br />Complete the form below and you password will change.<br />This will change your password for your authentication to ManageMC, this includes API requests.</p><br />
+          <div class="alert alert-warning">
+  		  <strong>Warning!</strong> This will log you out!<span class="glyphicon glyphicon-warning-sign" style="float:right;"></span>
+          </div>
+          
+         <center><div class="jumbotron" style="background-color:white; width:450px;">
+      <form class="form-signin"id="passwd">
+          <input id="Password" name="Password" type="password" class="form-control" placeholder="Current Password" required>
+          <input id="Password" name="Password" type="password" class="form-control" placeholder="New Password" required>
+          <input id="Password" name="Password" type="password" class="form-control" placeholder="Repeat NewPassword" required>
+        <!--<label class="checkbox">
+          <input type="checkbox" value="remember-me"> Remember me
+        </label> -->
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Change</button>
+      </form>
+		</div></center>
+
+          
+          
+			</div> <!-- End Panel -->
+          </div>
         </div>
+      </div>
     </div>
-    </div><!-- /row -->
 <?php
 render_footer();
 ?>
