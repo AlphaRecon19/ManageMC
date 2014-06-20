@@ -1,16 +1,23 @@
 <?php
 header("content-type: application/javascript");
+include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/server.php');
 ?>
 var elem = document.querySelector('#toggle_log');
 var elem2 = document.querySelector('#auto_refresh');
 var init = new Switchery(elem);
 var init2 = new Switchery(elem2);
 $(document).ready(function () {
-    $.ajax({
+    server_info();
+    filemanager();
+    on_load();
+	control();
+});
+function server_info() {
+$.ajax({
         type: "GET",
-        url: "/api/get/server_management_ManageServer.php?uid=<?php echo $_GET['uid']; ?>",
+        url: "/api/get/server_management_manageserver.php?uid=<?php echo $_GET['uid']; ?>",
         success: function (a) {
-            if (a.STATUS == "NEW") {
+            if (a.CLIENT_ID == "nill") {
                 $("#NewWarning").css("display", "block");
             }
             $("#UID_Table").html(a.UID);
@@ -21,12 +28,20 @@ $(document).ready(function () {
             $("#diskspaceb").css("width", a.diskfreep);
             $("#diskspacevalue").html(a.diskfreep);
             $("#disktotal").html(a.disktotal);
-            $("#diskused").html(a.diskused)
+            $("#diskused").html(a.diskused);
+            $("#ManageMCVersion").html(a.ManageMCVersion);
         }
     })
-    on_load();
-	control();
-});
+}
+function filemanager() {
+$.ajax({
+        type: "JSON",
+        url: "/api/get/filemanager.php?uid=<?php echo $_GET['uid']; ?>&remote_dir=/home/minecraft/minecraft/",
+        success: function (a) {
+            $("#filemanager").html(a.table);
+        }
+    })
+}
 
 function on_load() {
     $(".load0").val("0").trigger("change");
@@ -86,6 +101,31 @@ function clock() {
     })
 };
 
+$("#UpdateManageMC").click(function () {
+$("#loading_img").toggle("fast");
+$("#updatemanagemc_text").html('<p>Please wait while ManageMC is being updated on this node</p>');
+$("#updatemanagemc_version").html('');
+$("#updatemanagemc").modal("show");
+		$("#UpdateManageMC").prop('disabled', true);
+        $.ajax({
+            type: "JSON",
+            url: "/api/get/server_update_managemc.php?uid=<?php echo $_GET['uid']; ?>",
+            success: function (e) {
+            $("#loading_img").toggle("fast");
+                if (e.msg == "1") {
+                    $("#updatemanagemc_text").html('<p>ManageMC has been successfully updated to the latest version.<br />You can now close this dialog</p><br /><button type="button" class="btn btn-info" data-dismiss="modal">OK</button>');
+                    server_info();
+                    $("#updatemanagemc_version").html('<code>New Version: ' + e.version + '</code><br />');
+                    server_info();
+					$("#UpdateManageMC").prop('disabled', false);
+                } else {
+                server_info();
+                	$("#updatemanagemc_text").html('<p>There was a problem updating ManageMC.<br />Please try again in a few moments</p><code>' + e.msg + '</code><br /><br /><button type="button" class="btn btn-info" data-dismiss="modal">OK</button>');
+                    $("#UpdateManageMC").prop('disabled', false);
+                }
+            }
+        })
+    });
 
 function control() {
 	$("#loading").toggle("fast");
@@ -99,21 +139,21 @@ function control() {
 				$("#loading").toggle("fast");
 				$("#status_img").toggle("fast");
                 if (e == 1) {
-					$("#status").html("<b style='color:#0F0;'>ONLINE</b>");
+					$("#status").html("<?php echo Get_STATUS_COLOUR("ONLINE"); ?>");
 					$("#control_stop").prop('disabled', false);
 					$("#control_restart").prop('disabled', false);
 					$("#control_reboot").prop('disabled', false);
 					$("#control_refresh").prop('disabled', false);
 					$("#last_rersault").prepend("***** ManageMC found the server <b>ONLINE</b> *****<br />");
                 } else if (e == 0) {
-					$("#status").html("<b style='color:#F00;'>OFFLINE</b>");
+					$("#status").html("<?php echo Get_STATUS_COLOUR("ONLINE"); ?>");
 					$("#control_start").prop('disabled', false);
 					$("#control_reboot").prop('disabled', false);
 					$("#control_refresh").prop('disabled', false);
-                    $("#last_rersault").prepend("***** ManageMC found the server <b style='color:#F00;'>OFFLINE</b> *****<br />");
+                    $("#last_rersault").prepend("***** ManageMC found the server <?php echo Get_STATUS_COLOUR("ONLINE"); ?> *****<br />");
                 }
 				else {
-					$("#status").html("<b>UNKNOWN</b>");
+					$("#status").html("<?php echo Get_STATUS_COLOUR("UNKNOWN"); ?>");
 					$("#control_start").prop('disabled', false);
 					$("#control_stop").prop('disabled', false);
 					$("#control_restart").prop('disabled', false);
@@ -244,14 +284,14 @@ function timestamp()
 {
 var date;
 date = new Date();
-date = date.getUTCFullYear() + '-' + ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' + ('00' + date.getUTCDate()).slice(-2) + ' ' + ('00' + date.getUTCHours()).slice(-2) + ':' + ('00' + date.getUTCMinutes()).slice(-2) + ':' + ('00' + date.getUTCSeconds()).slice(-2);
+date = date.getFullYear() + '-' + ('00' + (date.getMonth()+1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2) + ' ' + ('00' + date.getHours()).slice(-2) + ':' + ('00' + date.getMinutes()).slice(-2) + ':' + ('00' + date.getSeconds()).slice(-2);
 return "<b style='color:#00F;'>>[U]</b> [" + date + "] ";
 }
 function timestamp_S()
 {
 var date;
 date = new Date();
-date = date.getUTCFullYear() + '-' + ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' + ('00' + date.getUTCDate()).slice(-2) + ' ' + ('00' + date.getUTCHours()).slice(-2) + ':' + ('00' + date.getUTCMinutes()).slice(-2) + ':' + ('00' + date.getUTCSeconds()).slice(-2);
+date = date.getFullYear() + '-' + ('00' + (date.getMonth()+1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2) + ' ' + ('00' + date.getHours()).slice(-2) + ':' + ('00' + date.getMinutes()).slice(-2) + ':' + ('00' + date.getSeconds()).slice(-2);
 return "<b style='color:#FFF;'><[S]</b> [" + date + "] ";
 }
 function check_status()
@@ -266,22 +306,22 @@ function check_status()
 				$("#loading").toggle("fast");
 				$("#status_img").toggle("fast");
                 if (e == 1) {
-					$("#status").html("<b style='color:#0F0;'>ONLINE</b>");
+					$("#status").html("<?php echo Get_STATUS_COLOUR("ONLINE"); ?>");
 					$("#last_rersault").prepend(timestamp_S() + "ManageMC just confirmed the server is <b>ONLINE</b><br />");
 					$("#control_stop").prop('disabled', false);
 					$("#control_restart").prop('disabled', false);
 					$("#control_reboot").prop('disabled', false);
 					$("#control_refresh").prop('disabled', false);
                 } else if (e == 0) {
-					$("#status").html("<b style='color:#F00;'>OFFLINE</b>");
-					$("#last_rersault").prepend(timestamp_S() + "ManageMC just confirmed the server is <b style='color:#F00;'>OFFLINE</b><br />");
+					$("#status").html("<?php echo Get_STATUS_COLOUR("ONLINE"); ?>");
+					$("#last_rersault").prepend(timestamp_S() + "ManageMC just confirmed the server is <?php echo Get_STATUS_COLOUR("ONLINE"); ?><br />");
 					$("#control_start").prop('disabled', false);
 					$("#control_restart").prop('disabled', false);
 					$("#control_reboot").prop('disabled', false);
 					$("#control_refresh").prop('disabled', false);
                 }
 				else {
-					$("#status").html("<b>UNKNOWN</b>");
+					$("#status").html("<?php echo Get_STATUS_COLOUR("UNKNOWN"); ?>");
 					$("#control_start").prop('disabled', false);
 					$("#control_stop").prop('disabled', false);
 					$("#control_restart").prop('disabled', false);
@@ -307,8 +347,8 @@ $("#status_img").toggle("fast");
                 if (e == 1) {
 					if($("#status").text() !== "ONLINE")
 					{
-					$("#status").html("<b style='color:#0F0;'>ONLINE</b>");
-					$("#last_rersault").prepend("***** ManageMC found the server <b>ONLINE</b> so updated the status to reflect this change *****<br />");	
+					$("#status").html("<?php echo Get_STATUS_COLOUR("ONLINE"); ?>");
+					$("#last_rersault").prepend("***** ManageMC found the server <?php echo Get_STATUS_COLOUR("ONLINE"); ?> so updated the status to reflect this change *****<br />");	
 					}
 					$("#control_stop").prop('disabled', false);
 					$("#control_restart").prop('disabled', false);
@@ -318,8 +358,8 @@ $("#status_img").toggle("fast");
                 } else if (e == 0) {
 					if($("#status").text() !== "OFFLINE")
 					{
-					$("#status").html("<b style='color:#F00;'>OFFLINE</b>");
-					$("#last_rersault").prepend("***** ManageMC found the server <b style='color:#F00;'>OFFLINE</b> so updated the status to reflect this change *****<br />");
+					$("#status").html("<?php echo Get_STATUS_COLOUR("OFFLINE"); ?></b>");
+					$("#last_rersault").prepend("***** ManageMC found the server <?php echo Get_STATUS_COLOUR("OFFLINE"); ?> so updated the status to reflect this change *****<br />");
 					}
 					$("#control_start").prop('disabled', false);
 					$("#control_reboot").prop('disabled', false);
@@ -327,7 +367,7 @@ $("#status_img").toggle("fast");
 					$("#control_delete").prop('disabled', false);
                 }
 				else {
-					$("#status").html("<b>UNKNOWN</b>");
+					$("#status").html("<?php echo Get_STATUS_COLOUR("UNKNOWN"); ?>");
 					$("#control_start").prop('disabled', false);
 					$("#control_stop").prop('disabled', false);
 					$("#control_restart").prop('disabled', false);
@@ -341,7 +381,7 @@ $("#status_img").toggle("fast");
 }
 function check_status_r()
 {
-	$("#status").html("<b style='color:#63F;'>REBOOTING</b>");
+	$("#status").html("<?php echo Get_STATUS_COLOUR("REBOOTING"); ?></b>");
 	$("#status_img").css("display", "none");
 	$.ajax({
             type: "GET",
@@ -349,14 +389,14 @@ function check_status_r()
             data: $(this).serialize(),
             success: function (e) {
                 if (e == 1) {
-					$("#last_rersault").prepend(timestamp_S() + "ManageMC just confirmed the server is back <b>ONLINE</b> but just confirming again<br />");
+					$("#last_rersault").prepend(timestamp_S() + "ManageMC just confirmed the server is back <?php echo Get_STATUS_COLOUR("ONLINE"); ?> but just confirming again<br />");
 					check_status();
 				}
 				else if (e == 0) {
 					check_status_r();
                 }
 				else {
-					$("#status").html("<b>UNKNOWN</b>");
+					$("#status").html("<?php echo Get_STATUS_COLOUR("UNKNOWN"); ?>");
 					$("#control_start").prop('disabled', false);
 					$("#control_stop").prop('disabled', false);
 					$("#control_restart").prop('disabled', false);

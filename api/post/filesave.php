@@ -1,23 +1,22 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/file.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/mysql.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/server.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/lib/phpseclib/Net/SSH2.php');
 $con    = mysql_mysqli_connect();
-
-$Posted_File = str_replace("<br />","",strip_tags($_POST["content"]));
+$Posted_File = $_POST["savefiledata"];
 $Server_UID = $_GET["Server_UID"];
+$server_ip = Get_IP($Server_UID);
+$password = Get_ROOTPASSWORD($Server_UID);
 $Remote_File = $_GET["File_Path"];
-Delete_File($Server_UID,$Remote_File);
-$filestore = Write_File($Posted_File,$Remote_File,$Server_UID,1);
-$File_Path = Get_Path($Server_UID,$Remote_File);
-
-$result = mysqli_query($con, "SELECT * FROM servers WHERE UID='".$Server_UID."'");
-$row = mysqli_fetch_array($result);
-$ssh   = new Net_SSH2($row['IP']);
-if (!$ssh->login("root", $row['ROOTPASSWORD'])) {
-	$ssh->exec("service managemc download " . $Remote_File . " http://alpha.managemc.com/filestore/" . $filestore);
+FILE_Delete_File($Server_UID,$Remote_File);
+$filestore = FILE_Write_File($Posted_File,$Remote_File,$Server_UID,1);
+$File_Path = FILE_Get_Path($Server_UID,$Remote_File);
+$ssh   = new Net_SSH2($server_ip);
+if ($ssh->login("root", $password)) {
+	$ssh->exec("rm -rf " .$Remote_File . "");
 }
-Upload_File_FTP($Remote_File, $File_Path, "149.3.143.103", "root", "***REMOVED***");
-$return["servers"]       = $Posted_File;
+$return["message"]       = FILE_Upload_File_FTP($Remote_File, $File_Path, $server_ip, "root", $password);
+header('Content-Type: application/json');
 echo json_encode($return);
 ?>

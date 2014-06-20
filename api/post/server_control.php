@@ -12,13 +12,13 @@ if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1)
     $result = mysqli_query($con, "SELECT * FROM servers WHERE UID='" . $_GET['uid'] . "'");
     while ($row = mysqli_fetch_array($result))
     {
-        $UID          = $row['UID'];
-        $IP           = $row['IP'];
+        $server_uid          = $row['UID'];
+        $server_ip           = $row['IP'];
         $ROOTPASSWORD = $row['ROOTPASSWORD'];
     }
     mysqli_close($con);
     
-    $ssh = new Net_SSH2($IP);
+    $ssh = new Net_SSH2($server_ip);
     if (!$ssh->login("root", $ROOTPASSWORD))
     {
         $server['SERVERLOGIN'] = 'NO';

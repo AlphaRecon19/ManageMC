@@ -11,6 +11,7 @@ Responce: {"server_online":(l33),"open_ticket":(l34),"client":(l35),"system_stat
 */
 include_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/mysql.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/server.php');
 $con = mysql_mysqli_connect();
 if (is_ajax()) {
     if (isset($_POST["action"]) && !empty($_POST["action"])) { //Checks if action value exists
@@ -30,13 +31,22 @@ function is_ajax()
 function status()
 {
     global $con;
-    //$return = $_POST;
+    $resulta                 = mysqli_query($con, "SELECT * FROM servers WHERE STATUS='ONLINE'");
+	
+	$n_p = 0;
+	while ($row = mysqli_fetch_array($resulta)) {
+        $n_p = $n_p + Get_ONLINE_PLAYER_NUMBER($row['UID']);
+    }
+	
+	
+	
+	
     $resulta                 = mysqli_query($con, "SELECT * FROM servers WHERE STATUS='ONLINE'");
     $num_rowsa               = mysqli_num_rows($resulta);
     $return["server_online"] = $num_rowsa;
     $return["open_ticket"]   = rand(23, 73);
     $return["client"]        = rand(3, 433);
-	$return["players"]        = rand(0, 1000);
+	$return["players"]       = $n_p;
     $result                  = mysqli_query($con, "SELECT * FROM servers");
     $num_rows                = mysqli_num_rows($result);
     $return["servers"]       = $num_rows;

@@ -1,11 +1,11 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/core.php');
-Check_Force_SSL();
+CORE_Check_Force_SSL();
 Check_Login();
-Render_Top("Settings");
-Render_Navbar();
-Render_Sidebar();
+CORE_Render_Top("Settings");
+CORE_Render_Navbar();
+CORE_Render_Sidebar();
 if (isset($_GET['page']) && !empty($_GET['page'])) {
     $page = $_GET['page'];
 }
@@ -58,6 +58,6 @@ $page = "home";
     </div>
     </div><!-- /row -->
 <?php
-render_footer();
+CORE_Render_Footer();
 ?>
 <?php }?>

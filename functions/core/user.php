@@ -5,24 +5,18 @@ function Check_Login()
 {
     global $con;
     if (isset($_COOKIE['admin_session']) && !empty($_COOKIE['admin_session'])) {
-        $cookie_session = $_COOKIE['admin_session'];
-        $result         = mysqli_query($con, "SELECT * FROM admin_users WHERE session='$cookie_session'");
-        $num_rows       = mysqli_num_rows($result);
-        if ($num_rows == 1) {
-            return 1;
+        if (Check_Login_Value() == 1) {
+			return 1;
         } else {
-        header('location: /login.php?session=true&type=admin');
+        header('location: /login.php?session=true&type=admin&return='.base64_encode(base64_encode($_SERVER['REQUEST_URI'])));
         exit;
         }
     }
     if (isset($_COOKIE['client_session']) && !empty($_COOKIE['client_session'])) {
-        $cookie_session = $_COOKIE['client_session'];
-        $result         = mysqli_query($con, "SELECT * FROM client_users WHERE Session='$cookie_session'");
-        $num_rows       = mysqli_num_rows($result);
-        if ($num_rows == 1) {
-            return 1;
+        if (Check_Login_Value() == 1) {
+			return 1;
         } else {
-        header('location: /login.php?session=true&type=client');
+        header('location: /login.php?session=true&type=client&return='.base64_encode(base64_encode($_SERVER['REQUEST_URI'])));
         exit;
         }
     } else {
@@ -93,7 +87,7 @@ function Username($session)
                 return $row['Username'];
             }
         } else {
-            return 0;
+            header('location: /login.php?session=true&type=admin&return='.base64_encode(base64_encode($_SERVER['REQUEST_URI'])));
         }
     }
     if (isset($_COOKIE['client_session']) && !empty($_COOKIE['client_session'])) {
@@ -105,10 +99,10 @@ function Username($session)
                 return $row['Username'];
             }
         } else {
-            return "Undefined";
+            header('location: /login.php?session=true&type=client&return='.base64_encode(base64_encode($_SERVER['REQUEST_URI'])));
         }
     } else {
-        return "Undefined";
+        header('location: /login.php?session=true&return='.base64_encode(base64_encode($_SERVER['REQUEST_URI'])));
         exit;
     }
 }

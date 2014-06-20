@@ -2,25 +2,34 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/core.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/file.php');
-
+include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/server.php');
 if (isset($_GET['uid']) && !empty($_GET['uid'])) {
-    $uid = $_GET['uid'];
+    $server_uid = $_GET['uid'];
 }
 if (isset($_GET['filepath']) && !empty($_GET['filepath'])) {
     $filepath = $_GET['filepath'];
 }
-$file = Get_Path($uid,$filepath);
-$lines = file($file);
-while(empty($lines))
+$file = FILE_Check_File($server_uid,$filepath);
+$server_ip = Get_IP($server_uid);
+$password = Get_ROOTPASSWORD($server_uid);
+if ($file == 0)
 {
-sleep (1);
+FILE_Download_File_FTP($server_ip,"root",$password,$filepath,$server_uid,0);
+$file = FILE_Get_Path($server_uid,$filepath);
 $lines = file($file);
 }
-Check_Force_SSL();
+else
+{
+FILE_Delete_File($server_uid,$filepath);
+FILE_Download_File_FTP($server_ip,"root",$password,$filepath,$server_uid,0);
+$file = FILE_Get_Path($server_uid,$filepath);
+$lines = file($file);	
+}
+CORE_Check_Force_SSL();
 Check_Login();
-Render_Top("Edit File");
-Render_Navbar();
-Render_Sidebar();
+CORE_Render_Top("Edit File");
+CORE_Render_Navbar();
+CORE_Render_Sidebar();
 if (isset($_GET['page']) && !empty($_GET['page'])) {
     $page = $_GET['page'];
 }
@@ -56,8 +65,8 @@ $page = "Edit";
             <div class="panel-heading">Editing <?php echo $filepath; ?></div>
             <div class="panel-body">
             <form method="post" action="#" id="form_editfile" style="font-size: 16.4px;">
-    		<textarea id="savefiledata" name="content" rows="<?php echo count($lines); ?>" style="width:100%;"><?php
-			foreach ($lines as $line_num => $line) {echo "" . htmlspecialchars($line) . "<br />";}?></textarea>
+    		<textarea id="savefiledata" name="savefiledata" rows="<?php echo count($lines); ?>" style="width:100%; padding-bottom: 50px;"><?php
+			foreach ($lines as $line_num => $line) {echo "" . htmlspecialchars($line) . "";}?></textarea>
 			
             <br /><center>
             <input type="submit" id="save_button" class="btn btn-default btn-success" name="save" value="Save" />
@@ -69,19 +78,9 @@ $page = "Edit";
     </div>
     </div><!-- /row -->
 <?php
-render_footer();
+CORE_Render_Footer();
 ?>
-<script type="text/javascript" src="/lib/tinymce/js/tinymce/tinymce.min.js"></script>
 <script type="text/javascript">
-tinymce.init({
-    selector: "textarea",
-    plugins: [
-        "code",
-        "paste"
-    ],
-    toolbar: "undo redo"
-});
-
 $(document).ready(function () {
     	$('#form_editfile').submit(function(e) {
 		event.preventDefault();
@@ -93,8 +92,8 @@ $(document).ready(function () {
 		data: $(this).serialize(),
         success: function (e) {
 			$("#activity_icon").toggle();
-            alert("done");
-			console.log(e);
+            alert(e.message);
+			<?php echo "window.location = '". $_SERVER["HTTP_REFERER"] . "';"; ?>
         }
     			});
 		

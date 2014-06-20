@@ -11,13 +11,14 @@ if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
     while ($row = mysqli_fetch_array($result)) {
         $server["UID"]          = $row['UID'];
         $server["IP"]           = $row['IP'];
-        $ip                     = $row['IP'];
+        $server_ip                     = $row['IP'];
         $server["ROOTPASSWORD"] = $row['ROOTPASSWORD'];
         $ROOTPASSWORD           = $row['ROOTPASSWORD'];
         $server["STATUS"]       = $row['STATUS'];
+		$server["CLIENT_ID"]    = $row['CLIENT_ID'];
     }
     
-    $ssh = new Net_SSH2($ip);
+    $ssh = new Net_SSH2($server_ip);
     if (!$ssh->login("root", $ROOTPASSWORD)) {
         $server['SERVERLOGIN'] = 'NO';
     } else {
@@ -30,42 +31,25 @@ if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
 		$server['disktotal'] = $aaaa[1];
 		$server['diskused'] = $aaaa[2];
 		$server['diskfreep'] = $aaaa[4];
-        $a                     = explode("2014", $raw);
-        $b                     = substr($a[1], 1);
-        $c                     = explode(" ", $b);
-        $b                     = preg_split('/\s+/', $c[0]);
-		$file = Get_Path($server["UID"],"/home/minecraft/minecraft/server.properties");
-		$lines = file($file);
-        foreach ($lines as $value) {
-            $e             = explode("=", $value);
-            $server[$e[0]] = $e[1];
-            if (empty($server[$e[0]]) || $server[$e[0]] == "\n") {
-                $server[$e[0]] = 'EMPTY VALUE';
-            }
-        }
-        //$f              = $MOTD;
-        //$g              = explode("=", $f);
-        //$server['motd'] = $g[1];
+		$server['ManageMCVersion'] = $ssh->exec("service managemc version s");
 		$mcsizea            = explode("/", $mcsize);
 		$server['mcsize'] = str_replace("\t", "", $mcsizea[0]);
-		
-		
 		$result = mysqli_query($con, "SELECT * FROM server_data WHERE SERVER_UID='" . $_GET['uid'] . "' ORDER BY ID DESC LIMIT 1");
 while ($row = mysqli_fetch_array($result)) {
-
 $server['ms'] = $row['MS'];
 }
 mysqli_close($con);
     }
 
 } else {
-    Add_log_entry("UID not supplied");
+    Add_log_entry("UID not supplied for api");
     mysqli_close($con);
     $return["UID"]          = "NULL";
     $return["IP"]           = "NULL";
     $return["ROOTPASSWORD"] = "NULL";
     $return["STATUS"]       = "NULL";
-	$server['$mcsize']      = "NULL";
+	$server['mcsize']      = "NULL";
+	$server['MNULL'] = "NULL";
     $server['API_STATUS']   = 'NO';
 }
 header('Content-Type: application/json');

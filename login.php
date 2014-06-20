@@ -2,7 +2,7 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/core.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/log.php');
-Check_Force_SSL();
+CORE_Check_Force_SSL();
 if (Check_Login_Value() == 1) {
 	Add_log_entry("Auto Login");
     header('location: /dashboard.php?page=Overview');
@@ -89,9 +89,9 @@ if (isset($_GET['type']) && $_GET['type'] == 'admin') {
         
         <?php
 if (isset($_GET['type']) && $_GET['type'] == 'admin') {
-    echo '<a href="?type=client" style="text-decoration:  none;"><button class="btn btn-lg btn-info btn-block">Client Login</button></a>';
+    echo '<a href="?type=client';if (isset($_GET['return'])) {echo '&return='.$_GET['return'];}echo'" style="text-decoration:  none;"><button class="btn btn-lg btn-info btn-block">Client Login</button></a>';
 } else {
-    echo '<a href="?type=admin" style="text-decoration:  none;"><button class="btn btn-lg btn-danger btn-block">Admin Login</button></a>';
+    echo '<a href="?type=admin';if (isset($_GET['return'])) {echo '&return='.$_GET['return'];}echo'" style="text-decoration:  none;"><button class="btn btn-lg btn-danger btn-block">Admin Login</button></a>';
 }
 ?>
         
@@ -102,15 +102,9 @@ if (isset($_GET['type']) && $_GET['type'] == 'admin') {
 		</div></center>
         
     </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-  </body>
-</html>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="js/bootstrap.js" ></script>
+<?php
+CORE_Render_Footer();
+?>
 <script>
 $(document).ready(function() {
   $('#form-signin').submit(function(e) {
@@ -138,10 +132,16 @@ if ($type !== "admin") {
           if (data.data == 'succsess') {
 			$('#welcome_back').toggle();
 			<?php
+			if(!isset($_GET['return']))
+			{
 if ($type !== "admin") {
     echo "window.location = '/myserver.php';";
 } else {
     echo "window.location = '/dashboard.php?page=Overview';";
+}
+			}
+			else {
+    echo "window.location = '/api/post/login.php?type=retun&v=".$_GET['return']."';";
 }
 ?>
             
