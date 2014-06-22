@@ -6,14 +6,14 @@ $con = mysql_mysqli_connect();
 function Get_IP($server_uid)
 {
     global $con;
-    $result = mysqli_query($con, "SELECT * FROM `servers` WHERE UID='$server_uid'");
+    $result = mysqli_query($con, "SELECT * FROM servers WHERE UID='$server_uid'");
 	$row = mysqli_fetch_array($result);
 	return $row['IP'];
 }
 function Get_ROOTPASSWORD($server_uid)
 {
     global $con;
-    $result = mysqli_query($con, "SELECT * FROM `servers` WHERE UID='$server_uid'");
+    $result = mysqli_query($con, "SELECT * FROM servers WHERE UID='$server_uid'");
 	$row = mysqli_fetch_array($result);
 	return $row['ROOTPASSWORD'];
 }

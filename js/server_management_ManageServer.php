@@ -8,9 +8,9 @@ var init = new Switchery(elem);
 var init2 = new Switchery(elem2);
 $(document).ready(function () {
     server_info();
-	control();
-    on_load();
     filemanager();
+    on_load();
+	control();
 });
 function server_info() {
 $.ajax({
@@ -36,42 +36,11 @@ $.ajax({
 function filemanager() {
 $.ajax({
         type: "JSON",
-        url: "/api/get/filemanager.php?uid=<?php echo $_GET['uid']; ?>&remote_dir=/home/minecraft/minecraft",
+        url: "/api/get/filemanager.php?uid=<?php echo $_GET['uid']; ?>&remote_dir=/home/minecraft/minecraft/",
         success: function (a) {
-        $("#filemanager").html(decode_base64(a.table));
+            $("#filemanager").html(a.table);
         }
     })
-}
-function decode_base64(s) {
-    var e={},i,k,v=[],r='',w=String.fromCharCode;
-    var n=[[65,91],[97,123],[48,58],[43,44],[47,48]];
-
-    for(z in n){for(i=n[z][0];i<n[z][1];i++){v.push(w(i));}}
-    for(i=0;i<64;i++){e[v[i]]=i;}
-
-    for(i=0;i<s.length;i+=72){
-    var b=0,c,x,l=0,o=s.substring(i,i+72);
-         for(x=0;x<o.length;x++){
-                c=e[o.charAt(x)];b=(b<<6)+c;l+=6;
-                while(l>=8){r+=w((b>>>(l-=8))%256);}
-         }
-    }
-    return r;
-    }
-function folderclick(a) {
-	event.preventDefault();
-	 $("#filemanager").html('<center><img src="images/712.GIF" width="32" height="32"></center>');
-	$.ajax({
-        type: "JSON",
-        url: a,
-        success: function (a) {
-            $("#filemanager").html(decode_base64(a.table));
-        }
-    })
-}
-function fileclick(a) {
-	event.preventDefault();
-	window.location.href = a;
 }
 
 function on_load() {

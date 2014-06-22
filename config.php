@@ -1,8 +1,8 @@
 <?php
 	//MYSQL Infomation
 		$MYSQL_HOST = '127.0.0.1';
-		$MYSQL_USERNAME = 'root';
-		$MYSQL_PASSWORD = '';
+		$MYSQL_USERNAME = 'managemc';
+		$MYSQL_PASSWORD = 'managemc';
 		$MYSQL_DB = 'managemc';		
 	//Other
 		date_default_timezone_set('Europe/London');

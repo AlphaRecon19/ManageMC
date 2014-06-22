@@ -1,8 +1,7 @@
 <?php
-include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/core.php');
-CORE_compress();
+$time_start = microtime(true);
+header('Content-Type: application/javascript');
 header('Cache-control: max-age=1');
-header("content-type: application/javascript");
 $type = $_GET['type'];
 $time = $_GET['time'];
 $res = $_GET['res'];

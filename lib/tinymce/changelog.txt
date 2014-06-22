@@ -215,7 +215,7 @@ Version 4.0.11 (2013-11-20)
 	Fixed bug where the autoresize plugin wouldn't properly resize the editor to initial contents some times.
 	Fixed bug where the templates dialog wouldn't be properly rendered on IE 7.
 	Fixed bug where updating styles in the advanced tab under the image dialog would remove the style attribute on cancel.
-	Fixed bug where tinymce.full.min.php bundle script wasn't detected when looking for the tinymce root path.
+	Fixed bug where tinymce.full.min.js bundle script wasn't detected when looking for the tinymce root path.
 	Fixed bug where the SaxParser would throw a malformed URI sequence for inproperly encoded uris.
 	Fixed bug where enabling table caption wouldn't properly render the caption element on IE 10 and below.
 	Fixed bug where the scrollbar would be placed to the left and on top of the text of menu items in RTL mode.
@@ -524,8 +524,8 @@ Version 4.0b2 (2013-04-24)
 	Fixed so the width setting applies to the editor panel in modern theme.
 	Fixed so it's easier to make custom icons for buttons using plain old images.
 Version 4.0b1 (2013-04-11)
-	Added new node.php based build process used uglify, amdlc, jake etc.
-	Added new package.phpon to enable easy installation of dependent npm packages used for building.
+	Added new node.js based build process used uglify, amdlc, jake etc.
+	Added new package.json to enable easy installation of dependent npm packages used for building.
 	Added new link, image, charmap, anchor, code, hr plugins since these are now moved out of the theme.
 	Rewrote all plugins and themes from scratch so they match the new UI framework.
 	Replaced all events to use the more common <target>.on/off(<event>) methods instead of <target>.<event>.add/remove.

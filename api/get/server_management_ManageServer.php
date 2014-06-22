@@ -4,7 +4,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/lib/phpseclib/Net/SSH2.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/log.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/file.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/core.php');
 if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
     include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/mysql.php');
     $con    = mysql_mysqli_connect();
@@ -25,16 +24,16 @@ if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1) {
     } else {
         $server['SERVERLOGIN'] = 'YES';
         $server['API_STATUS']  = 'YES';
-		$scr                  =  $ssh->exec("df --block-size=GB | grep GB");
-		$mcsize                  = $ssh->exec("du -s /home/minecraft/minecraft/world");
+		$scr                  =  $ssh->exec("df -H | grep G");
+		$mcsize                  = $ssh->exec("du -h -sh /home/minecraft/minecraft/");
 		$new = preg_replace('/\s+/', '=', $scr);
 		$aaaa = explode("=", $new);
-		$server['disktotal'] = $aaaa[7];
-		$server['diskused'] = $aaaa[8];
-		$server['diskfreep'] = $aaaa[10];
+		$server['disktotal'] = $aaaa[1];
+		$server['diskused'] = $aaaa[2];
+		$server['diskfreep'] = $aaaa[4];
 		$server['ManageMCVersion'] = $ssh->exec("service managemc version s");
 		$mcsizea            = explode("/", $mcsize);
-		$server['mcsize'] = CORE_bytes(str_replace("\t", "", $mcsizea[0]) * 1000);
+		$server['mcsize'] = str_replace("\t", "", $mcsizea[0]);
 		$result = mysqli_query($con, "SELECT * FROM server_data WHERE SERVER_UID='" . $_GET['uid'] . "' ORDER BY ID DESC LIMIT 1");
 while ($row = mysqli_fetch_array($result)) {
 $server['ms'] = $row['MS'];
