@@ -76,7 +76,7 @@ $page = $_GET['page'];if ($page == "ManageServer") {?>
 </tr>
 <tr>
 <td><center><b>Disk space</b></center></td>
-<td><center><div class="progress"><div class="progress-bar" role="progressbar" id="diskspaceb" style="width: 0%;"><b><span id="diskspacevalue"></span></b></div></div></center><center><span id="diskused"></span> of<span id="disktotal"></span></center></td>
+<td><center><div class="progress"><div class="progress-bar" role="progressbar" id="diskspaceb" style="width: 0%;"><b><span id="diskspacevalue"></span></b></div></div></center><center><span id="diskused"></span> of <span id="disktotal"></span></center></td>
 </tr>
 <tr>
 <td><center><b>World Size</b></center></td>
@@ -148,9 +148,9 @@ Curently: <span id="status"></span><span><img src="/images/712.GIF" width="32" h
 </div><!-- End col-md-6 -->
 <div class="col-md-6">
 <div class="panel panel-info">
-<div class="panel-heading"><h3>Filemanager</h3><a href="#<?php echo $_GET['uid']; ?>"><button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;"><span class="glyphicon glyphicon-search"></span> Detalied</button></a></div>
-<div class="panel-body">        
-<span id="filemanager"  style="width:100%;"><center><img src="images/712.GIF" width="32" height="32"></center></span>
+<div class="panel-heading"><h3>The Filemanager </h3><a href="#<?php echo $_GET['uid']; ?>"><button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;"><span class="glyphicon glyphicon-folder-open"></span>Popout Filemanager</button></a></div>
+<div class="panel-body" style="padding: 0px;">        
+<div id="filemanager"  style="width:100%; height: 500px; overflow: scroll; overflow-x: auto;"><center><img src="images/712.GIF" width="32" height="32"></center></div>
 </div>
 </div><!-- End Panel -->
 </div><!-- End col-md-6 -->

@@ -1,7 +1,8 @@
 <?php
-$time_start = microtime(true);
-header('Content-Type: application/javascript');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/core.php');
+CORE_compress();
 header('Cache-control: max-age=1');
+header("content-type: application/javascript");
 $type = $_GET['type'];
 $time = $_GET['time'];
 $res = $_GET['res'];

@@ -3,6 +3,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/lib/phpseclib/Net/SSH2.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/mysql.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/log.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/core.php');
+CORE_Check_Force_SSL();
+CORE_compress();
 if (isset($_GET['uid']) && !empty($_GET['uid']) && Check_Login_Value() == 1)
 {
     

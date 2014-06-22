@@ -2,6 +2,34 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 
+function CORE_compress(){
+// compression
+$c = ini_get( 'zlib.output_compression' );
+if(empty($c)){
+ini_set( 'zlib.output_compression', '1' );
+ini_set( 'zlib.output_compression_level', '9' ); /* levels, I think are between 0 (no compression) - 9 (maximum compression). Meanwhile there's the '-1', which I think is the default compression level, whichever that is! */
+}	
+}
+function CORE_bytes($bytes, $force_unit = NULL, $format = NULL, $si = TRUE) {
+    $format = ($format === NULL) ? '%01.2f %s' : (string) $format;
+    if ($si == FALSE OR strpos($force_unit, 'i') !== FALSE)
+    {
+        $units = array('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB');
+        $mod   = 1024;
+    }
+    else
+    {
+        $units = array('B', 'kB', 'MB', 'GB', 'TB', 'PB');
+        $mod   = 1000;
+    }
+    if (($power = array_search((string) $force_unit, $units)) === FALSE)
+    {
+        $power = ($bytes > 0) ? floor(log($bytes, $mod)) : 0;
+	}
+    return sprintf($format, $bytes / pow($mod, $power), $units[$power]);
+}
+
+
 //Function Time_Elapsed - This will calculate the time since a timestamp.
 function CORE_Time_Elapsed($secs, $full){
 $bit = array(
@@ -136,9 +164,7 @@ echo '<! /START CORE_Render_Top()/ ->
     <meta name="author" content="">
     <link rel="shortcut icon" href="/images/img.png">
     <title>'.$name.' - ManageMC</title>
-    <link href="/css/bootstrap.css" rel="stylesheet">
-    <link href="/css/dashboard.css" rel="stylesheet">
-    <link href="/css/signin.css" rel="stylesheet">
+    <link href="/css/loadcss.php" rel="stylesheet">
     <link rel="stylesheet" href="/lib/switchery/switchery.min.css">
 </head>
 <body>
@@ -148,10 +174,11 @@ echo '<! /START CORE_Render_Top()/ ->
 
 //Function Render_Top - This function render the fotter of the page, should include jquery.
 function CORE_Render_Footer()
-{##<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">/script>
+{##//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
 echo '</div><!-- /container -->
 </body>
 </html>
+<script src="js/jquery.min.js">/script>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.js"></script>';
 }
