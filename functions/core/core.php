@@ -2,6 +2,39 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 
+function CORE_GetJSFiles() {
+$myarray  = func_get_args();
+$serialized = serialize($myarray); 
+echo "<script src='/js/loadjs.php?scripts=" . $encoded = base64_encode($serialized) ."'></script>";
+}
+
+function CORE_Compress(){
+$c = ini_get( 'zlib.output_compression' );
+if(empty($c)){
+ini_set( 'zlib.output_compression', '1' );
+ini_set( 'zlib.output_compression_level', '9' );
+}	
+}
+function CORE_bytes($bytes, $force_unit = NULL, $format = NULL, $si = TRUE) {
+    $format = ($format === NULL) ? '%01.2f %s' : (string) $format;
+    if ($si == FALSE OR strpos($force_unit, 'i') !== FALSE)
+    {
+        $units = array('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB');
+        $mod   = 1024;
+    }
+    else
+    {
+        $units = array('B', 'kB', 'MB', 'GB', 'TB', 'PB');
+        $mod   = 1000;
+    }
+    if (($power = array_search((string) $force_unit, $units)) === FALSE)
+    {
+        $power = ($bytes > 0) ? floor(log($bytes, $mod)) : 0;
+	}
+    return sprintf($format, $bytes / pow($mod, $power), $units[$power]);
+}
+
+
 //Function Time_Elapsed - This will calculate the time since a timestamp.
 function CORE_Time_Elapsed($secs, $full){
 $bit = array(
@@ -63,7 +96,7 @@ echo 'Activity</a></li></ul>
 if ($page == "/server_management.php?page=AddServer") {echo '<li class="active"><a href="/server_management.php?page=AddServer">';}
 else {echo '<li><a href="/server_management.php?page=AddServer">';}
 echo 'Add Server</a></li>';
-if ($_SERVER["SCRIPT_NAME"] == "/server_management.php" && $page !== "/server_management.php?page=AddServer") {echo '<li class="active"><a href="/server_management.php?page=ListServer">';}
+if ($_SERVER["SCRIPT_NAME"] == "/server_management.php" && $page !== "/server_management.php?page=AddServer" && $_SERVER['REQUEST_URI'] !== "/server_management.php") {echo '<li class="active"><a href="/server_management.php?page=ListServer">';}
 else {echo '<li><a href="/server_management.php?page=ListServer">';}
 echo 'Manage Servers</a></li></ul>
 <hr style="margin-top: -10px; margin-bottom: -10px;" />
@@ -136,10 +169,7 @@ echo '<! /START CORE_Render_Top()/ ->
     <meta name="author" content="">
     <link rel="shortcut icon" href="/images/img.png">
     <title>'.$name.' - ManageMC</title>
-    <link href="/css/bootstrap.css" rel="stylesheet">
-    <link href="/css/dashboard.css" rel="stylesheet">
-    <link href="/css/signin.css" rel="stylesheet">
-    <link rel="stylesheet" href="/lib/switchery/switchery.min.css">
+    <link href="/css/loadcss.php" rel="stylesheet">
 </head>
 <body>
 <! /END CORE_Render_Top()/ ->
@@ -148,11 +178,12 @@ echo '<! /START CORE_Render_Top()/ ->
 
 //Function Render_Top - This function render the fotter of the page, should include jquery.
 function CORE_Render_Footer()
-{##<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">/script>
+{
+global $GoogleCND;
 echo '</div><!-- /container -->
 </body>
-</html>
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.js"></script>';
+</html>';
+if($GoogleCND == TRUE){echo'<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>';}else{echo'<script src="js/jquery.min.js"></script>';}
+echo'<script src="js/bootstrap.js"></script>';
 }
 ?>

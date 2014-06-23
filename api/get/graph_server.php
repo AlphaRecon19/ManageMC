@@ -1,7 +1,9 @@
 <?php
 $time_start = microtime(true);
-header('Content-Type: application/javascript');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/core.php');
+CORE_Compress();
 header('Cache-control: max-age=1');
+header("content-type: application/javascript");
 $type = $_GET['type'];
 $time = $_GET['time'];
 $res = $_GET['res'];
@@ -134,7 +136,7 @@ if (isset($_GET['stats']) && $_GET['stats'] == 'true') {
         } else {}
     }
     echo '$("#total_r").html("'.round($t, 0, PHP_ROUND_HALF_DOWN).'");';
-    $time_end = microtime(true);
+   $time_end = microtime(true);
     $execution_time = ($time_end - $time_start);
     echo '$("#total_t").html("'.number_format($execution_time, 2, '.', '').' seconds");';
 }

@@ -38,7 +38,7 @@ function Check_Login_Value()
             return 0;
         }
     }
-    if (isset($_COOKIE['client_session']) && !empty($_COOKIE['client_session'])) {
+    elseif (isset($_COOKIE['client_session']) && !empty($_COOKIE['client_session'])) {
         $cookie_session = $_COOKIE['client_session'];
         $result         = mysqli_query($con, "SELECT * FROM client_users WHERE Session='$cookie_session'");
         $num_rows       = mysqli_num_rows($result);
@@ -48,6 +48,9 @@ function Check_Login_Value()
             return 0;
         }
     }
+	else{
+		return 0;
+	}
 }
 function Force_Client()
 {
@@ -78,7 +81,7 @@ function Username($session)
             return 0;
         }
     }
-    if (isset($_COOKIE['admin_session']) && !empty($_COOKIE['admin_session'])) {
+    elseif (isset($_COOKIE['admin_session']) && !empty($_COOKIE['admin_session'])) {
         $cookie_session = $_COOKIE['admin_session'];
         $result         = mysqli_query($con, "SELECT * FROM admin_users WHERE session='$cookie_session'");
         $num_rows       = mysqli_num_rows($result);
@@ -90,7 +93,7 @@ function Username($session)
             header('location: /login.php?session=true&type=admin&return='.base64_encode(base64_encode($_SERVER['REQUEST_URI'])));
         }
     }
-    if (isset($_COOKIE['client_session']) && !empty($_COOKIE['client_session'])) {
+    elseif (isset($_COOKIE['client_session']) && !empty($_COOKIE['client_session'])) {
         $cookie_session = $_COOKIE['client_session'];
         $result         = mysqli_query($con, "SELECT * FROM client_users WHERE Session='$cookie_session'");
         $num_rows       = mysqli_num_rows($result);
@@ -101,7 +104,8 @@ function Username($session)
         } else {
             header('location: /login.php?session=true&type=client&return='.base64_encode(base64_encode($_SERVER['REQUEST_URI'])));
         }
-    } else {
+    }
+	else {
         header('location: /login.php?session=true&return='.base64_encode(base64_encode($_SERVER['REQUEST_URI'])));
         exit;
     }

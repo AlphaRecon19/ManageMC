@@ -17,6 +17,7 @@ if ($file == 0)
 FILE_Download_File_FTP($server_ip,"root",$password,$filepath,$server_uid,0);
 $file = FILE_Get_Path($server_uid,$filepath);
 $lines = file($file);
+FILE_Delete_File($server_uid,$filepath);
 }
 else
 {
@@ -24,6 +25,7 @@ FILE_Delete_File($server_uid,$filepath);
 FILE_Download_File_FTP($server_ip,"root",$password,$filepath,$server_uid,0);
 $file = FILE_Get_Path($server_uid,$filepath);
 $lines = file($file);	
+FILE_Delete_File($server_uid,$filepath);
 }
 CORE_Check_Force_SSL();
 Check_Login();

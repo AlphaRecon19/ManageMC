@@ -75,9 +75,9 @@ if (!$ssh->login("root", $_GET['password'])) {
     }
     if ($stage == 8) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL8' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
-		$return["data"] .= htmlentities($ssh->exec('wget -O /home/minecraft/minecraft/minecraft_server.jar "http://api.alpha.managemc.com/minecraft_server.jar"'));
+		$return["data"] = htmlentities($ssh->exec("screen -h 200 -mS ManageMC_Install8 service managemc install"));
+		//$return["data"] .= htmlentities($ssh->exec('wget -O /home/minecraft/minecraft/minecraft_server.jar "http://api.alpha.managemc.com/minecraft_server.jar"'));
 		$return["data"] .= htmlentities($ssh->exec("chown minecraft:minecraft /home/minecraft/minecraft/minecraft_server.jar"));
-        //$return["data"] = htmlentities($ssh->exec("screen -h 200 -mS ManageMC_Install8 service managemc install"));
     }
     if ($stage == 9) {
 		$ssh->exec("service managemc stop");

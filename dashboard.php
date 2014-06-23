@@ -189,115 +189,110 @@ CORE_Render_Footer();
 <script>$(document).ready(function(){
 	
 	$.ajax({
-	url:"/api/get/dashboad.php?cmd=activity_log&limit=50&v1=hash&v2=a&s=<?php echo $start_n; ?>",
+	url:"/api/get/log.php?cmd=activity_log&limit=50&v1=hash&v2=a&s=<?php echo $start_n; ?>",
 	type:"JSON",
 	success:function(e){
-		if(e){
-			$("#Activity_Table").html(e.table);
-			$("#Header_Table").html(e.header);
+		if(e.table){
+			$("#Activity_Table").html(decode_base64(e.table));
+			$("#Header_Table").html(decode_base64(e.header));
 			}else
-			{$("#Activity_Table").html("Nothing Found!")}
+			{window.location = "/dashboard.php?page=Activity";}
 			}
 });
-	
-	function e(){$("#clear_activity_log_stage_2").toggle()}$("#clear_activity_log_confirm").click(function(t){$("#clear_activity_log_stage_1").toggle();$.ajax({type:"GET",url:"/api/get/dashboad.php?cmd=activity_log_clear",data:$(this).serialize(),success:function(t){$("#clear_activity_log_stage_1").toggle();$("#loaderImage").toggle();if(t=="done"){$("#clear_activity_log_stage_2").toggle();setTimeout(e,5e3)}else{}}})});
-
-
-
-
-
-
+function e() {
+    $("#clear_activity_log_stage_2").toggle()
+}
+$("#clear_activity_log_confirm").click(function (t) {
+    $("#clear_activity_log_stage_1").toggle();
+    $.ajax({
+        type: "JSON",
+        url: "/api/get/log.php?cmd=activity_log_clear",
+        data: $(this).serialize(),
+        success: function (t) {
+            $("#clear_activity_log_stage_1").toggle();
+            $("#loaderImage").toggle();
+            if (decode_base64(t.msg) == "done") {
+                $("#clear_activity_log_stage_2").toggle();
+                setTimeout(e, 5e3)
+            } else {}
+        }
+    })
+});
 $("#Hash").click(function () {
-reset_Activity_Table()
-toggle_all("#Hasha","#Hash");
-update_Activity_Table("hash", "a");
-} )
-
+    reset_Activity_Table();
+    toggle_all("#Hasha", "#Hash");
+    update_Activity_Table("hash", "a")
+});
 $("#Hasha").click(function () {
-reset_Activity_Table()
-toggle_all("#Hashd","#Hash");
-update_Activity_Table("hash", "d");
-} )
-
+    reset_Activity_Table();
+    toggle_all("#Hashd", "#Hash");
+    update_Activity_Table("hash", "d")
+});
 $("#Hashd").click(function () {
-reset_Activity_Table()
-toggle_all("#Hasha","#Hash");
-update_Activity_Table("hash", "a");
-} )
-
+    reset_Activity_Table();
+    toggle_all("#Hasha", "#Hash");
+    update_Activity_Table("hash", "a")
+});
 $("#Time").click(function () {
-reset_Activity_Table()
-toggle_all("#Timea","#Time");
-update_Activity_Table("time", "a");
-} )
-
+    reset_Activity_Table();
+    toggle_all("#Timea", "#Time");
+    update_Activity_Table("time", "a")
+});
 $("#Timea").click(function () {
-reset_Activity_Table()
-toggle_all("#Timed","#Time");
-update_Activity_Table("time", "d");
-} )
-
+    reset_Activity_Table();
+    toggle_all("#Timed", "#Time");
+    update_Activity_Table("time", "d")
+});
 $("#Timed").click(function () {
-reset_Activity_Table()
-toggle_all("#Timea","#Time");
-update_Activity_Table("time", "a");
-} )
-
+    reset_Activity_Table();
+    toggle_all("#Timea", "#Time");
+    update_Activity_Table("time", "a")
+});
 $("#IP").click(function () {
-reset_Activity_Table()
-toggle_all("#IPa","#IP");
-update_Activity_Table("ip", "a");
-} )
-
+    reset_Activity_Table();
+    toggle_all("#IPa", "#IP");
+    update_Activity_Table("ip", "a")
+});
 $("#IPa").click(function () {
-reset_Activity_Table()
-toggle_all("#IPd","#IP");
-update_Activity_Table("ip", "d");
-} )
-
+    reset_Activity_Table();
+    toggle_all("#IPd", "#IP");
+    update_Activity_Table("ip", "d")
+});
 $("#IPd").click(function () {
-reset_Activity_Table()
-toggle_all("#IPa","#IP");
-update_Activity_Table("ip", "a");
-} )
-
-
+    reset_Activity_Table();
+    toggle_all("#IPa", "#IP");
+    update_Activity_Table("ip", "a")
+});
 $("#User").click(function () {
-reset_Activity_Table()
-toggle_all("#Usera","#User");
-update_Activity_Table("user", "a");
-} )
-
+    reset_Activity_Table();
+    toggle_all("#Usera", "#User");
+    update_Activity_Table("user", "a")
+});
 $("#Usera").click(function () {
-reset_Activity_Table()
-toggle_all("#Userd","#User");
-update_Activity_Table("user", "d");
-} )
-
+    reset_Activity_Table();
+    toggle_all("#Userd", "#User");
+    update_Activity_Table("user", "d")
+});
 $("#Userd").click(function () {
-reset_Activity_Table()
-toggle_all("#Usera","#User");
-update_Activity_Table("user", "a");
-} )
-
-
+    reset_Activity_Table();
+    toggle_all("#Usera", "#User");
+    update_Activity_Table("user", "a")
+});
 $("#Message").click(function () {
-reset_Activity_Table()
-toggle_all("#Messagea","#Message");
-update_Activity_Table("message", "a");
-} )
-
+    reset_Activity_Table();
+    toggle_all("#Messagea", "#Message");
+    update_Activity_Table("message", "a")
+});
 $("#Messagea").click(function () {
-reset_Activity_Table()
-toggle_all("#Messaged","#Message");
-update_Activity_Table("message", "d");
-} )
-
+    reset_Activity_Table();
+    toggle_all("#Messaged", "#Message");
+    update_Activity_Table("message", "d")
+});
 $("#Messaged").click(function () {
-reset_Activity_Table()
-toggle_all("#Messagea","#Message");
-update_Activity_Table("message", "a");
-} )
+    reset_Activity_Table();
+    toggle_all("#Messagea", "#Message");
+    update_Activity_Table("message", "a")
+})
 
 
 
@@ -340,17 +335,34 @@ $(appart).css("display","block");
 }
 function update_Activity_Table(v1, v2) {
 	$.ajax({
-	url:"/api/get/dashboad.php?cmd=activity_log&limit=50&v1=" + v1 + "&v2=" + v2 +'&s=<?php echo $start_n; ?>',
+	url:"/api/get/log.php?cmd=activity_log&limit=50&v1=" + v1 + "&v2=" + v2 +'&s=<?php echo $start_n; ?>',
 	type:"JSON",
 	success:function(e){
-		if(e.table){
-			$("#Activity_Table").html(e.table);
-			$("#Header_Table").html(e.header);
+		if(decode_base64(e.table)){
+			$("#Activity_Table").html(decode_base64(e.table));
+			$("#Header_Table").html(decode_base64(e.header));
 			}else
-			{$("#Activity_Table").html("Nothing Found!")}
+			{$("#Activity_Table").html("<center>Nothing Found!</center>")}
 			}
 });
 }
+
+function decode_base64(s) {
+    var e={},i,k,v=[],r='',w=String.fromCharCode;
+    var n=[[65,91],[97,123],[48,58],[43,44],[47,48]];
+
+    for(z in n){for(i=n[z][0];i<n[z][1];i++){v.push(w(i));}}
+    for(i=0;i<64;i++){e[v[i]]=i;}
+
+    for(i=0;i<s.length;i+=72){
+    var b=0,c,x,l=0,o=s.substring(i,i+72);
+         for(x=0;x<o.length;x++){
+                c=e[o.charAt(x)];b=(b<<6)+c;l+=6;
+                while(l>=8){r+=w((b>>>(l-=8))%256);}
+         }
+    }
+    return r;
+    }
 </script>
 <?php 
  }

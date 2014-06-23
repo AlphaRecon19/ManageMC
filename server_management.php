@@ -2,6 +2,7 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/core.php');
 CORE_Check_Force_SSL();
+CORE_Compress();
 Check_Login();
 Force_Admin();
 CORE_Render_Top("Server Management");
@@ -76,7 +77,7 @@ $page = $_GET['page'];if ($page == "ManageServer") {?>
 </tr>
 <tr>
 <td><center><b>Disk space</b></center></td>
-<td><center><div class="progress"><div class="progress-bar" role="progressbar" id="diskspaceb" style="width: 0%;"><b><span id="diskspacevalue"></span></b></div></div></center><center><span id="diskused"></span> of<span id="disktotal"></span></center></td>
+<td><center><div class="progress"><div class="progress-bar" role="progressbar" id="diskspaceb" style="width: 0%;"><b><span id="diskspacevalue"></span></b></div></div></center><center><span id="diskused"><img src="images/712.GIF" width="32" height="32"></span> of <span id="disktotal"><img src="images/712.GIF" width="32" height="32"></span> Used</center></td>
 </tr>
 <tr>
 <td><center><b>World Size</b></center></td>
@@ -108,7 +109,7 @@ $page = $_GET['page'];if ($page == "ManageServer") {?>
 Show Log: <input type="checkbox" class="js-switch" id="toggle_log" checked />
 Auto Refresh: <input type="checkbox" class="js-switch" id="auto_refresh" />
 Curently: <span id="status"></span><span><img src="/images/712.GIF" width="32" height="32" style="margin: 0; display:none;" id="status_img"> <button id="control_refresh" class="btn" disabled="disabled"><i class="glyphicon glyphicon-refresh"></i></button></span>
-<div id="last_rersault" style="background-color: #696969; color: #0F0; width: 100%; max-height: 330px; margin-top: 10px; font-weight: 500; padding: 5px; border-radius: 5px; overflow: scroll; overflow-x: auto;"></div>
+<div id="last_rersault" style="background-color: #696969; color: #0F0; width: 100%; max-height: 330px; margin-top: 10px; font-weight: 500; padding: 5px; border-radius: 5px; overflow: scroll; overflow-y: auto; overflow-x: auto;"></div>
 </div>
 </div><!-- End Panel -->
 </div><!-- End col-md-12 -->
@@ -148,26 +149,24 @@ Curently: <span id="status"></span><span><img src="/images/712.GIF" width="32" h
 </div><!-- End col-md-6 -->
 <div class="col-md-6">
 <div class="panel panel-info">
-<div class="panel-heading"><h3>Filemanager</h3><a href="#<?php echo $_GET['uid']; ?>"><button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;"><span class="glyphicon glyphicon-search"></span> Detalied</button></a></div>
-<div class="panel-body">        
-<span id="filemanager"  style="width:100%;"><center><img src="images/712.GIF" width="32" height="32"></center></span>
+<div class="panel-heading"><h3>Filemanager </h3><a href="/server_management.php?page=Filemanager&uid=<?php echo $_GET['uid']; ?>"><button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;"><span class="glyphicon glyphicon-folder-open"></span> Filemanager</button></a></div>
+<div class="panel-body" style="padding: 0px;">        
+<div id="filemanager"  style="width:100%; height: 500px; overflow: scroll; overflow-y: auto; overflow-x: auto;"><center><img src="images/712.GIF" width="32" height="32" style="margin: 10px;"></center></div>
 </div>
 </div><!-- End Panel -->
 </div><!-- End col-md-6 -->
 <div class="col-md-6">
 <div class="panel panel-info">
-<div class="panel-heading"><h3>Unknown</h3><a href="/server_management.php?page=Graph&uid=<?php echo $_GET['uid']; ?>&res=1&time=15&type=players"><button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;"><span class="glyphicon glyphicon-search"></span> View More</button></a></div>
+<div class="panel-heading"><h3>The WayBack Tool</h3><a href="/server_management.php?page=Graph&uid=<?php echo $_GET['uid']; ?>&res=1&time=15&type=players"><button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;"><span class="glyphicon glyphicon-search"></span> View More</button></a></div>
 <div class="panel-body">        
 <center><img src="images/712.GIF" width="32" height="32"></center>
 </div>
 </div><!-- End Panel -->
 </div><!-- End col-md-6 -->
 </div><!-- /row -->
-<?php CORE_Render_Footer();?>
-<script src='lib/switchery/switchery.min.js'></script>
-<script src="js/globalize.min.js"></script>
-<script src="js/dx.chartjs.js"></script>
-<script src="js/knob.js"></script>
+<?php CORE_Render_Footer();
+echo CORE_GetJSFiles("lib/switchery/switchery.min.js","js/globalize.min.js","js/dx.chartjs.js","js/knob.js");
+?>
 <script src="js/server_management_manageserver.php?uid=<?php echo $_GET['uid']; ?>" ></script>
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=load&time=15&res=1"></script>
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=ms&time=15&res=1"></script>
@@ -209,7 +208,8 @@ Curently: <span id="status"></span><span><img src="/images/712.GIF" width="32" h
 <?php
 CORE_Render_Footer();
 ?><script>
-$(document).ready(function(){$.ajax({type:"GET",url:"/api/get/listservers.php",data:$(this).serialize(),success:function(e){$("#loaderImage").toggle();if(e){$("#listservers").html(e)}else{$("#listservers").html('<center>We found no servres in the database. Why not add one <a href="server_management.php?page=AddServer">here</a></center>')}}})})</script><?php
+function decode_base64(e){var t={},n,r,i=[],s="",o=String.fromCharCode;var u=[[65,91],[97,123],[48,58],[43,44],[47,48]];for(z in u){for(n=u[z][0];n<u[z][1];n++){i.push(o(n))}}for(n=0;n<64;n++){t[i[n]]=n}for(n=0;n<e.length;n+=72){var a=0,f,l,c=0,h=e.substring(n,n+72);for(l=0;l<h.length;l++){f=t[h.charAt(l)];a=(a<<6)+f;c+=6;while(c>=8){s+=o((a>>>(c-=8))%256)}}}return s}$(document).ready(function(){$.ajax({type:"GET",dataType:"JSON",url:"/api/get/listservers.php",success:function(e){$("#loaderImage").toggle();if(e.servers!=0){$("#listservers").html(decode_base64(e.serverlist))}else{$("#listservers").html('<center>We found no servres in the database. Why not add one <a href="server_management.php?page=AddServer">here</a></center>')}}})})</script>
+<?php
 }//End of ListServers
 if ($page == "AddServer") {
 ?>
@@ -269,8 +269,7 @@ if ($page == "AddServer") {
 </div><!-- /.modal -->
 <?php
 CORE_Render_Footer();
-?><script src="js/server_management_AddServer.js" ></script>
-<?php
+CORE_GetJSFiles("js/server_management_AddServer.js");
 }
 if ($page == "DeleteServer") {
 ?>
@@ -308,8 +307,8 @@ if ($page == "DeleteServer") {
 </div><!-- /.modal -->    
 <?php 
 CORE_Render_Footer();
+CORE_GetJSFiles("js/server_management_DeleteServer.js");
 ?>
-<script src="js/server_management_DeleteServer.js" ></script>
 <?php }
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/server.php');
 if ($page == "Graph") {
@@ -376,10 +375,8 @@ elseif($TYPE == "players")
 </div><!-- /row -->
 <?php 
 CORE_Render_Footer();
+CORE_GetJSFiles("/lib/switchery/switchery.min.js","/js/globalize.min.js","js/dx.chartjs.js");
 ?>
-<script src='lib/switchery/switchery.min.js'></script>
-<script src="js/globalize.min.js"></script>
-<script src="js/dx.chartjs.js"></script>
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=<?php echo $TYPE; ?>&time=<?php echo $TIME; ?>&res=<?php echo $RES; ?>&stats=true&timestamp=<?php echo $TIMESTAMP; ?>"></script>
 <script>
 var elem = document.querySelector('#toggle_res');
@@ -393,5 +390,32 @@ $("#toggle_res").change(function(){$("#res").toggle();});
 $("#toggle_info").change(function(){$("#info").toggle();}); 
 </script>
 <?php }
-}
+else
+{
 ?>
+
+<div class="col-md-10">
+<div class="panel panel-danger">
+<div class="panel-heading"><h3>Invalid Page</h3></div>
+<div class="panel-body">        
+<center>You have provided an invalid page request. Please check that link and try again.
+</div>
+</div><!-- End Panel -->
+</div><!-- End col-md-6 --></center>
+<?php
+}
+}
+else
+{
+?>
+
+<div class="col-md-10">
+<div class="panel panel-danger">
+<div class="panel-heading"><h3>Invalid Page</h3></div>
+<div class="panel-body">        
+<center>You have provided an invalid Server UID. Please check that link and try again or click <a href="/server_management.php?page=ListServer">here</a> to go back to the server list.
+</div>
+</div><!-- End Panel -->
+</div><!-- End col-md-6 --></center>
+<?php
+}

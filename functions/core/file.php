@@ -15,14 +15,18 @@ $rand1 = base64_encode(md5(base64_encode((rand(1, rand(1, 9999999999) * rand(1, 
 $rand = substr($rand1, 0, -1);
 $info = explode(".", $server_file);
 $filename = str_replace($info[0], "", $server_file);
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 $local_file   = $_SERVER['DOCUMENT_ROOT'] . '/filestore/' . $rand . $filename;
+} else {
+$local_file   = $_SERVER['DOCUMENT_ROOT'] . 'filestore/' . $rand . $filename;
+}
 $conn_id      = ftp_connect($ftp_server);
 $login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
 ftp_pasv($conn_id, true);
 if (ftp_get($conn_id, $local_file, $server_file, FTP_BINARY)) {
 mysqli_query($con, "INSERT INTO filestore (UID, Original, Path, ServerUID) VALUES ('" . $rand1 . "', '" . $server_file . "', '" . $local_file . "', '" . $server_uid . "')");
 if ($mode !== 0) {Add_log_entry("File Downloaded " .$server_file, "System");return "1";}
-} else {Add_log_entry("Error Downloading File" .$server_file, "System"); return "0";}
+} else {Add_log_entry("Error Downloading File" .$server_file, "System"); return error_get_last();}
 ftp_close($conn_id);
 }
 
@@ -79,12 +83,16 @@ else
 $info       = explode(".", $server_file);
 $filename   = str_replace($info[0], "", $server_file);
 }
-$local_file = $_SERVER['DOCUMENT_ROOT'] . '/filestore/' . $rand . $filename;
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+$local_file   = $_SERVER['DOCUMENT_ROOT'] . '/filestore/' . $rand . $filename;
+} else {
+$local_file   = $_SERVER['DOCUMENT_ROOT'] . 'filestore/' . $rand . $filename;
+}
 $file = fopen($local_file, "w");
-fwrite($file, str_replace("<br />","//r",strip_tags($content)));
+fwrite($file, $content);
 fclose($file);
 mysqli_query($con, "INSERT INTO filestore (UID, Original, Path, ServerUID) VALUES ('" . $rand1 . "', '" . $server_file . "', '" . $local_file . "', '" . $server_uid . "')");
-return 1;
+return $local_file;
 }
 
 /* Function Write_File
@@ -106,12 +114,13 @@ Saves a list of a directory to file. Useful for the file manager.
 */
 function FILE_SSH_Save_Directory($remote_dir, $server_ip, $password, $server_uid)
 {
+	include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/server.php');
 	$ssh = new Net_SSH2($server_ip);
-	if (!$ssh->login("root", $password)){Add_log_entry("ERROR controling the server " . $server_IP . " - Login Fail", "System");return "login fail";}
+	if (!$ssh->login("root", $password)) {Add_log_entry("ERROR controling the server " . $server_IP . " - Login Fail", "System");return "login fail";}
 	else
 	{
-		$list = $ssh->exec("ls -l -h --si --no-group -p ". $remote_dir);
-		FILE_Write_File($list, $remote_dir, $server_uid, 0);
+		$list = $ssh->exec("ls -l --no-group -p ". $remote_dir);
+		return FILE_Write_File($list, $remote_dir . '.dir', $server_uid, 0);
 	}
 }
 /* Function Write_File
