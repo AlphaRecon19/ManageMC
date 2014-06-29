@@ -1,0 +1,9 @@
+.dropbox_true {
+color: blue; float: right; margin-top: 3px;
+}
+.dropbox_false {
+color: black; float: right; margin-top: 3px; cursor:pointer;
+}
+.dropbox_hover {
+color: black; float: right; margin: 0px; cursor:pointer;
+}

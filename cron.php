@@ -14,6 +14,7 @@ while ($row = mysqli_fetch_array($result)) {
 	$n++;
     $server_uid = $row['UID'];
 	$server_ip = $row['IP'];
+	$serverSTATUS      = $row['STATUS'];
 	
     $ssh = new Net_SSH2($row['IP']);
     if (!@$ssh->login("root", $row['ROOTPASSWORD'])) {$N_Ramfree = '0'; $N_Load = "0"; $N_Ping = "0";$N_Status = 'OFFLINE';$N_Players = '0';}
@@ -24,6 +25,14 @@ while ($row = mysqli_fetch_array($result)) {
 	if (empty($players['players']) && $players['players']!= 0){$N_Players = '0';}else{$N_Players = $players['players'];}
 	if (empty($N_Players)){$N_Players = '0';}
 	if (empty($players['ping'])){$N_Ping = '0';$N_Status = 'OFFLINE';}else{$N_Ping = $players['ping'];$N_Status = 'ONLINE';}
+		
+	if($serverSTATUS !== $N_Status)
+	{
+	$ssh->exec("service managemc start s");	
+	$N_Status = 'ONLINE';
+	echo 'lol';
+	}
+	
 	$a = $ssh->exec("cat /proc/loadavg");
 	$b = explode(" ",$a);
 	$N_Load = $b[0] * 100;

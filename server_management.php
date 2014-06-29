@@ -158,8 +158,8 @@ Curently: <span id="status"></span><span><img src="/images/712.GIF" width="32" h
 <div class="col-md-6">
 <div class="panel panel-info">
 <div class="panel-heading"><h3>The WayBack Tool</h3><a href="/server_management.php?page=Graph&uid=<?php echo $_GET['uid']; ?>&res=1&time=15&type=players"><button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;"><span class="glyphicon glyphicon-search"></span> View More</button></a></div>
-<div class="panel-body">        
-<center><img src="images/712.GIF" width="32" height="32"></center>
+<div class="panel-body" style="padding: 0px;">        
+<div id="twbt"  style="width:100%; height: 500px; overflow: scroll; overflow-y: auto; overflow-x: auto;"><center><img src="images/712.GIF" width="32" height="32" style="margin: 10px;"></center></div>
 </div>
 </div><!-- End Panel -->
 </div><!-- End col-md-6 -->
@@ -210,7 +210,7 @@ CORE_Render_Footer();
 ?><script>
 function decode_base64(e){var t={},n,r,i=[],s="",o=String.fromCharCode;var u=[[65,91],[97,123],[48,58],[43,44],[47,48]];for(z in u){for(n=u[z][0];n<u[z][1];n++){i.push(o(n))}}for(n=0;n<64;n++){t[i[n]]=n}for(n=0;n<e.length;n+=72){var a=0,f,l,c=0,h=e.substring(n,n+72);for(l=0;l<h.length;l++){f=t[h.charAt(l)];a=(a<<6)+f;c+=6;while(c>=8){s+=o((a>>>(c-=8))%256)}}}return s}$(document).ready(function(){$.ajax({type:"GET",dataType:"JSON",url:"/api/get/listservers.php",success:function(e){$("#loaderImage").toggle();if(e.servers!=0){$("#listservers").html(decode_base64(e.serverlist))}else{$("#listservers").html('<center>We found no servres in the database. Why not add one <a href="server_management.php?page=AddServer">here</a></center>')}}})})</script>
 <?php
-}//End of ListServers
+exit;}//End of ListServers
 if ($page == "AddServer") {
 ?>
 <!-- Modal -->
@@ -270,7 +270,7 @@ if ($page == "AddServer") {
 <?php
 CORE_Render_Footer();
 CORE_GetJSFiles("js/server_management_AddServer.js");
-}
+exit;}
 if ($page == "DeleteServer") {
 ?>
 <!-- Modal -->
@@ -309,7 +309,8 @@ if ($page == "DeleteServer") {
 CORE_Render_Footer();
 CORE_GetJSFiles("js/server_management_DeleteServer.js");
 ?>
-<?php }
+<?php
+exit;}
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/server.php');
 if ($page == "Graph") {
 $RES = $_GET['res'];
@@ -389,7 +390,9 @@ $("#toggle_time").change(function(){$("#time").toggle();});
 $("#toggle_res").change(function(){$("#res").toggle();}); 
 $("#toggle_info").change(function(){$("#info").toggle();}); 
 </script>
-<?php }
+<?php
+exit;
+}
 else
 {
 ?>
@@ -404,8 +407,9 @@ else
 </div><!-- End col-md-6 --></center>
 <?php
 }
+exit;
 }
-else
+elseif(empty($_GET['uid']))
 {
 ?>
 

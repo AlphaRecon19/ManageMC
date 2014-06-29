@@ -9,8 +9,9 @@ var init2 = new Switchery(elem2);
 $(document).ready(function () {
     server_info();
 	control();
-    on_load();
     filemanager();
+    twbt();
+    on_load();
 });
 function server_info() {
 $.ajax({
@@ -36,9 +37,18 @@ $.ajax({
 function filemanager() {
 $.ajax({
         type: "JSON",
-        url: "/api/get/filemanager.php?uid=<?php echo $_GET['uid']; ?>&remote_dir=/home/minecraft/minecraft",
+        url: "/api/get/filemanager.php?uid=<?php echo $_GET['uid']; ?>&remote_dir=/home/minecraft",
         success: function (a) {
         $("#filemanager").html(decode_base64(a.table));
+        }
+    })
+}
+function twbt() {
+$.ajax({
+        type: "JSON",
+        url: "/api/get/twbt.php?uid=<?php echo $_GET['uid']; ?>&remote_dir=/home/minecraft",
+        success: function (a) {
+        $("#twbt").html(decode_base64(a.table));
         }
     })
 }
@@ -61,7 +71,7 @@ function decode_base64(s) {
 function folderclick(a) {
 	event.preventDefault();
 	 $("#filemanager").html('<center><img src="images/712.GIF" width="32" height="32" style="margin: 10px;"></center>');
-	$.ajax({
+		$.ajax({
         type: "JSON",
         url: a,
         success: function (a) {
@@ -69,9 +79,45 @@ function folderclick(a) {
         }
     })
 }
+function folderclicktwbt(a) {
+	event.preventDefault();
+	 $("#twbt").html('<center><img src="images/712.GIF" width="32" height="32" style="margin: 10px;"></center>');
+		$.ajax({
+        type: "JSON",
+        url: a,
+        success: function (a) {
+            $("#twbt").html(decode_base64(a.table));
+        }
+    })
+}
 function fileclick(a) {
 	event.preventDefault();
 	window.location.href = a;
+}
+
+function db_upload_click(a, obj) {
+event.preventDefault();
+var id = a;
+$('#' + id).html('<i class="fa fa-refresh fa-spin" style="color: black; float: right; margin-top: 3px; cursor: pointer; margin-right: 2px;"></i>');
+$.ajax({
+        type: "JSON",
+        url: "/api/get/addcloudstore.php?filepath="+ obj +"&uid=<?php echo $_GET['uid']; ?>&type=dropbox",
+        success: function (b) {
+        if(b.upload=='1')
+        {
+            $('#' + id).html('<i class="fa fa-dropbox fa-lg dropbox_true"></i>');
+            alert(b.msg);
+        }
+        else
+        {
+        $('#' + id).html('<i class="fa fa-dropbox fa-lg dropbox_false"></i>');
+        alert(b.msg);
+        
+        }
+        }
+    })
+
+
 }
 
 function on_load() {

@@ -18,11 +18,11 @@ if (!$ssh->login("root", $_GET['password'])) {
     if ($stage == 1) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL1' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
 
-		$return["data"] = htmlentities($ssh->exec("screen -h 200 -mS ManageMC_Install1 yum update -y"));
+		$return["data"] = htmlentities($ssh->exec("yum update -y"));
     }
     if ($stage == 2) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL2' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
-        $return["data"] = htmlentities($ssh->exec("screen -h 200 -mS ManageMC_Install2 yum install screen nano wget java-1.7.0-openjdk vsftpd -y"));
+        $return["data"] = htmlentities($ssh->exec("yum install screen nano wget java-1.7.0-openjdk vsftpd -y"));
     }
     if ($stage == 3) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL3' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
@@ -67,6 +67,8 @@ if (!$ssh->login("root", $_GET['password'])) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL6' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
         $return["data"] = htmlentities($ssh->exec("mkdir /home/minecraft/minecraft"));
 		$return["data"] .= htmlentities($ssh->exec("chown minecraft:minecraft /home/minecraft/minecraft"));
+		$return["data"] .= htmlentities($ssh->exec('echo "eula=true" >> /home/minecraft/minecraft/eula.txt'));
+		$return["data"] .= htmlentities($ssh->exec("chown minecraft:minecraft /home/minecraft/minecraft/eula.txt"));
     }
     if ($stage == 7) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL7' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
@@ -75,8 +77,7 @@ if (!$ssh->login("root", $_GET['password'])) {
     }
     if ($stage == 8) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL8' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
-		$return["data"] = htmlentities($ssh->exec("screen -h 200 -mS ManageMC_Install8 service managemc install"));
-		//$return["data"] .= htmlentities($ssh->exec('wget -O /home/minecraft/minecraft/minecraft_server.jar "http://api.alpha.managemc.com/minecraft_server.jar"'));
+		$return["data"] = htmlentities($ssh->exec("service managemc install"));
 		$return["data"] .= htmlentities($ssh->exec("chown minecraft:minecraft /home/minecraft/minecraft/minecraft_server.jar"));
     }
     if ($stage == 9) {

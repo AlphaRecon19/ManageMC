@@ -37,10 +37,12 @@ if (@strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE'])==$lastModified || $etagHeader
 }
 header('Cache-control: max-age=360000');
 $cssFiles = array(
+	"managemc.css",
   "bootstrap.css",
   "dashboard.css",
   "signin.css",
-  $_SERVER['DOCUMENT_ROOT'] . "/lib/switchery/switchery.min.css"
+  $_SERVER['DOCUMENT_ROOT'] . "/lib/switchery/switchery.min.css",
+  "font-awesome.min.css"
 );
 header("Content-type: text/css");
 $buffer = "";

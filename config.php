@@ -10,6 +10,6 @@
 		$Max_Login_Errors_Per_IP = 7;
 		$Max_Login_Errors_Reset = 60; //Time in seconds
 		$ManageMC_Domain = "alpha.managemc.com"; //The domain where managemc is located. (Without http(s)://)
-		$ManageMC_Version = "0.0.7 Pre-Alpha"; //Do dont change this. It is used to check your instalation is up to date
+		$ManageMC_Version = "0.0.10 Pre-Alpha"; //Do dont change this. It is used to check your instalation is up to date
 		$GoogleCND = "TRUE"; //Use Google's CDN for AJAX TRUE / FALSE
 ?>

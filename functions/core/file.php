@@ -30,6 +30,13 @@ if ($mode !== 0) {Add_log_entry("File Downloaded " .$server_file, "System");retu
 ftp_close($conn_id);
 }
 
+function FILE_Get_Filename($filepath)
+{
+	$a = explode("/",$filepath);
+ $b = array_reverse($a);
+ return $b[0];
+}
+
 /* Function Check_File
 This will check if a file already exists. 0 = no and 1 = yes
 */

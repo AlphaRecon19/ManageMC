@@ -183,7 +183,8 @@ global $GoogleCND;
 echo '</div><!-- /container -->
 </body>
 </html>';
-if($GoogleCND == TRUE){echo'<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>';}else{echo'<script src="js/jquery.min.js"></script>';}
+if($GoogleCND === TRUE){echo'<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>';}
+else{echo'<script src="js/jquery.min.js"></script>';}
 echo'<script src="js/bootstrap.js"></script>';
 }
 ?>
