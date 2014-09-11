@@ -2,6 +2,7 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/core.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/log.php');
+CORE_Compress();
 CORE_Check_Force_SSL();
 if (Check_Login_Value() == 1) {
 	Add_log_entry("Auto Login");
@@ -12,27 +13,8 @@ if (!isset($_GET['type'])) {
 } else {
     $type = $_GET['type'];
 }
+CORE_Render_Top("Login");
 ?>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="/ico/favicon.png">
-
-    <title>Login - ManageMC</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="/css/bootstrap.css" rel="stylesheet">
-    <link href="/css/dashboard.css" rel="stylesheet">
-    <link href="/css/signin.css" rel="stylesheet">
-    
-  </head>
-
-  <body>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -159,4 +141,11 @@ if ($type !== "admin") {
    });
  });
 });
+$(document).keydown(function(e) {
+          if (e.keyCode == '13') {
+            $('#myModal').modal('hide');
+			document.getElementById('Password').focus()
+		  }
+        });
+
 </script>

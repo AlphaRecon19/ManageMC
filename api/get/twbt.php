@@ -7,15 +7,15 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/cloudstore.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/api.php');
 CORE_Compress();
 $data['API_Secure()'] =  API_Secure();
-if (isset($_GET['remote_dir']) && empty($_GET['remote_dir'])) {$remote_dir = '/home/minecraft/snapshots/'; $displaydir = 0;}else{$remote_dir = $_GET['remote_dir']; $displaydir = 1;}
+if (isset($_GET['remote_dir']) && empty($_GET['remote_dir'])) {$remote_dir = '/home/minecraft/snapshots'; $displaydir = 0;}else{$remote_dir = $_GET['remote_dir']; $displaydir = 1;}
 
 $dir_chk = explode("/", $remote_dir);
-if($dir_chk[1] == "home" && $dir_chk[2] == "minecraft" && $dir_chk[3] == "snapshots" && $remote_dir != '/home/minecraft/snapshots/')
+if($dir_chk[1] == "home" && $dir_chk[2] == "minecraft" && $dir_chk[3] == "snapshots" && $remote_dir != '/home/minecraft/snapshots')
 {$remote_dir = $remote_dir;
 $displaydir = 1;
 }
 else
-{$remote_dir = '/home/minecraft/snapshots/';
+{$remote_dir = '/home/minecraft/snapshots';
 $displaydir = 0;
 }
 
@@ -51,49 +51,26 @@ foreach ($lines as $line_num => $line) {
 if ($a == 0){$a=1;}
 else
 {
-$e=explode(" ", $line);
-$new = "";
-foreach ($e as $a => $c) {$new .= $c."|";}
-$new = str_replace("||||||||", "", $new);
-$new = str_replace("|||||||", "", $new);
-$new = str_replace("||||||", "", $new);
-$new = str_replace("|||||", "", $new);
-$new = str_replace("||||", "", $new);
-$new = str_replace("|||", "", $new);
-$newf= str_replace("||", "", $new);
-$newe= explode("|", $newf);
+$newe=explode("=", $line);
+//var_dump($newe); echo "<br />";
 $table .='<tr>';
-if (!isset($newe[7]) && $newe[7] == "")
-{$clicked = file_redirect($newe[0], $newe[6]);
-if(CS_Check_Exists(str_replace(array("\n","\r\n"), '', $newe[6]),$server_uid) == 1){$dropboxclass = 'dropbox_true';}
+
+
+$filename = $newe[7];
+$date2 = $newe[6];
+$date = $newe[4];
+$date1 = $newe[5];
+$size = $newe[3];
+$type = $newe[0];
+
+$clicked = file_redirect($type, $filename);
+if(CS_Check_Exists(str_replace(array("\n","\r\n"), '', $filename),$server_uid) == 1){$dropboxclass = 'dropbox_true';}
 else{$dropboxclass = 'dropbox_false';}
-$table.= '<td id="' . $newe[6] . '"><center><a style="cursor: pointer;" onClick="' . $clicked . '">' . $newe[6] . '</a><a onclick="onclick="' .db_upload_click($remote_dir, $newe[6]). '">' . a_code($remote_dir, $newe[6]) . '</center></td><td><center>' . CORE_bytes($newe[2]) . '</center></td><td><center>' . $newe[3] . '' . $newe[4] . '@' . $newe[5] . '</center></td>';
-}
-elseif (!isset($newe[8]) && $newe[8] == "")
-{
-if(is_numeric($newe[3]))
-{
-$clicked = file_redirect($newe[0], $newe[6]);
-if(CS_Check_Exists(str_replace(array("\n","\r\n"), '', $newe[6]),$server_uid) == 1){$dropboxclass = 'dropbox_true';}
-else{$dropboxclass = 'dropbox_false';}
-$table.= '<td id="' . $newe[6] . '"><center><a style="cursor: pointer;" onClick="' . $clicked . '" >' . $newe[6] . '</a><a onclick="' .db_upload_click($remote_dir, $newe[6]). '">' . a_code($newe[0], $newe[6]) . '</center></td><td><center>' . CORE_bytes($newe[3]) . '</center></td><td><center>' . $newe[4] . '@' . $newe[5] . '</center></td>';
-}
-else
-{	
-$clicked = file_redirect($newe[0], $newe[6]);
-if(CS_Check_Exists(str_replace(array("\n","\r\n"), '', $newe[6]),$server_uid) == 1){$dropboxclass = 'dropbox_true';}
-else{$dropboxclass = 'dropbox_false';}
-$table.= '<td id="' . $newe[6] . '"><center><a style="cursor: pointer;" onClick="' . $clicked . '" >' . $newe[6] . '</a><a onclick="' .db_upload_click($remote_dir, $newe[6]). '">' . a_code($newe[0], $newe[6]) . '</center></td><td><center>' . CORE_bytes($newe[1]) . '</center></td><td><center>' . $newe[3] . '' . $newe[4] . '@' . $newe[5] . '</center></td>';
-}
-}
-elseif (!isset($newe[9]) && $newe[9] == "")
-{$clicked = file_redirect($newe[0], $newe[7]);
-$db_upload_click = file_redirect($newe[0], $newe[7]);
-if(CS_Check_Exists(str_replace(array("\n","\r\n"), '', $newe[7]),$server_uid) == 1){$dropboxclass = 'dropbox_true';}
-else{$dropboxclass = 'dropbox_false';}
-$table.= '<td id="' . $newe[7] . '"><center><a style="cursor: pointer;" onClick="' . $clicked . '" >' . $newe[7] . '</a><a onclick="' .db_upload_click($remote_dir, $newe[7]). '">' . a_code($newe[0], $newe[7]) . '</center></td><td><center>' . CORE_bytes($newe[3]) . '</center></td><td><center>' . $newe[4] . ' ' . $newe[5] . '@' . $newe[6] . '</center></td>';
-}
+
+
+$table.= '<td id="' . $filename . '"><center><a style="cursor: pointer;" onClick="' . $clicked . '">' . $filename . '</a>' . a_code($type, $filename) . '</center></td><td><center>' . CORE_bytes($size) . '</center></td><td><center>' . $date1 . ' ' . $date . '@' . $date2 . '</center></td>';
 $table.= '</tr>';
+
 }
 }
 function file_redirect($str, $str1) {
@@ -104,17 +81,17 @@ else{return "fileclick('editfile.php?filepath=". $remote_dir ."/". $str1."&uid="
 }
 
 function db_upload_click($str, $str1) {
-return "db_upload_click('".makeid($str,$str1)."', '". $str . '/' . $str1 ."');";
+return "db_upload_click('".makeid($str,$str1 . "_DB")."', '". $str . '/' . $str1 ."');";
 }
 
 function makeid($str, $str1) {
-return str_replace(array("/",".",":"), "_", $str . $str1);
+return md5(str_replace(array("/",".",":"), "_", $str . $str1));
 }
 function a_code($a, $b)
 {
 global $remote_dir, $dropboxclass;
 if (substr($a, 0, 1) != "d")
-{return '<a onclick="' .db_upload_click($remote_dir, $b). '"><span id="'.makeid($a, $b).'"><i class="fa fa-dropbox fa-lg '.$dropboxclass.'"></i></span></a>';	}
+{return '<a onclick="' .db_upload_click($remote_dir, $b). '"><span id="'.makeid($remote_dir, $b . "_DB").'"><i class="fa fa-dropbox fa-lg '.$dropboxclass.'"></i></span></a>';	}
 }
 $table .='</tbody></table>';
 $table = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $table);

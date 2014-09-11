@@ -21,6 +21,7 @@ mysqli_query($con, "DELETE FROM server_data WHERE SERVER_UID='".$server_uid."'")
 $ssh->exec("service managemc stop");
 $ssh->exec("userdel -r minecraft");
 $ssh->exec("rm -rf /etc/init.d/managemc");
+$ssh->exec("rm -rf /home/minecraft");
 $ssh->exec("reboot");
 mysqli_query($con, "DELETE FROM servers WHERE UID='".$server_uid."'");
 mysqli_query($con, "DELETE FROM server_data WHERE SERVER_UID='".$server_uid."'");

@@ -35,7 +35,7 @@ if (@strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE'])==$lastModified || $etagHeader
        header("HTTP/1.1 304 Not Modified");
        exit;
 }
-header('Cache-control: max-age=360000');
+header('Cache-control: max-age=36000000');
 $cssFiles = array(
 	"managemc.css",
   "bootstrap.css",

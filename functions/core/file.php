@@ -126,7 +126,7 @@ function FILE_SSH_Save_Directory($remote_dir, $server_ip, $password, $server_uid
 	if (!$ssh->login("root", $password)) {Add_log_entry("ERROR controling the server " . $server_IP . " - Login Fail", "System");return "login fail";}
 	else
 	{
-		$list = $ssh->exec("ls -l --no-group -p ". $remote_dir);
+		$list = $ssh->exec("ls -l --no-group -p ". $remote_dir." | awk -v OFS='=' '$1=$1'");
 		return FILE_Write_File($list, $remote_dir . '.dir', $server_uid, 0);
 	}
 }

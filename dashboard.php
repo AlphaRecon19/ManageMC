@@ -4,6 +4,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 CORE_Check_Force_SSL();
 Check_Login();
 Force_Admin();
+CORE_Compress();
 CORE_Render_Top("Dashboard");
 CORE_Render_Navbar();
 CORE_Render_Sidebar();

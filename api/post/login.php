@@ -1,7 +1,7 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
  if (isset($_GET['type']) && $_GET['type'] == "retun" && isset($_GET['v'])) {
-	 header('location: http://' . $ManageMC_Domain . base64_decode(base64_decode($_GET['v'])) . '');
+	 header('location: http://' . $config['Max_Login_Errors_Reset'] . base64_decode(base64_decode($_GET['v'])) . '');
 	 exit;
  }
 header('Content-Type: application/json');
@@ -9,25 +9,25 @@ header('Content-Type: application/json');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/mysql.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/log.php');
 $con    = mysql_mysqli_connect();
-$result = mysqli_query($con, "SELECT * FROM failed_logins WHERE IP='" . $_SERVER['REMOTE_ADDR'] . "' AND Timestamp >= '" . (time() - $Max_Login_Errors_Reset) . "'");
-time() - $Max_Login_Errors_Reset;
+$result = mysqli_query($con, "SELECT * FROM failed_logins WHERE IP='" . $_SERVER['REMOTE_ADDR'] . "' AND Timestamp >= '" . (time() - $config['Max_Login_Errors_Reset']) . "'");
+time() - $config['Max_Login_Errors_Reset'];
 $num_rows_failed_logins = mysqli_num_rows($result);
 $failed_logins = $num_rows_failed_logins + 1;
-if ($num_rows_failed_logins >= $Max_Login_Errors_Per_IP) {
-    Add_log_entry("The IP " . $_SERVER['REMOTE_ADDR'] . " tried to login but was blocked because of previous number of failed login attempts equal that of the value in the config.php file (" . $Max_Login_Errors_Per_IP . "", "");
+if ($num_rows_failed_logins >= $config['Max_Login_Errors_Per_IP']) {
+    Add_log_entry("The IP " . $_SERVER['REMOTE_ADDR'] . " tried to login but was blocked because of previous number of failed login attempts equal that of the value in the config.php file (" . $config['Max_Login_Errors_Per_IP'] . "", "");
    $server['data'] = 'loginblocked';
    echo json_encode($server);exit;	
 } else {
     if (empty($_POST['Email']) or $_POST['Email'] == '') {
-        $server['data'] = "Error 1 - Email Address Feild Empty!<br /><small>Attempt " . $failed_logins . " out of " . $Max_Login_Errors_Per_IP . "</small>";
+        $server['data'] = "Error 1 - Email Address Feild Empty!<br /><small>Attempt " . $failed_logins . " out of " . $config['Max_Login_Errors_Per_IP'] . "</small>";
         mysqli_query($con, "INSERT INTO `failed_logins` (`UID`, `IP`, `Attempt`, `Timestamp`) VALUES (NULL, '" . $_SERVER['REMOTE_ADDR'] . "', '" . ($failed_logins + 1) . "', '" . time() . "');");
-        Add_log_entry("Failed Login (Error 1 - Email Address Feild Empty - " . $failed_logins . " out of " . $Max_Login_Errors_Per_IP . ")", "");
+        Add_log_entry("Failed Login (Error 1 - Email Address Feild Empty - " . $failed_logins . " out of " . $config['Max_Login_Errors_Per_IP'] . ")", "");
         echo json_encode($server);exit;		
     }
     if (empty($_POST['Password']) or $_POST['Password'] == '') {
-        $server['data'] = "Error 2 - Password Feild Empty!<br /><small>Attempt " . $failed_logins . " out of " . $Max_Login_Errors_Per_IP . "</small>";
+        $server['data'] = "Error 2 - Password Feild Empty!<br /><small>Attempt " . $failed_logins . " out of " . $config['Max_Login_Errors_Per_IP'] . "</small>";
         mysqli_query($con, "INSERT INTO `failed_logins` (`UID`, `IP`, `Attempt`, `Timestamp`) VALUES (NULL, '" . $_SERVER['REMOTE_ADDR'] . "', '" . ($failed_logins + 1) . "', '" . time() . "');");
-        Add_log_entry("Failed Login (Error 2 - Password Feild Empty - " . $failed_logins . " out of " . $Max_Login_Errors_Per_IP . ")", "");
+        Add_log_entry("Failed Login (Error 2 - Password Feild Empty - " . $failed_logins . " out of " . $config['Max_Login_Errors_Per_IP'] . ")", "");
         echo json_encode($server);exit;	
     }
     $Email    = $_POST['Email'];
@@ -37,8 +37,8 @@ if ($num_rows_failed_logins >= $Max_Login_Errors_Per_IP) {
         $array = json_decode($file);
         $var   = get_object_vars($array);
         if (empty($file)) {
-            $server['data'] = "Error 3 - Invalid Login<br /><small>Attempt " . $failed_logins . " out of " . $Max_Login_Errors_Per_IP . "</small>";
-            Add_log_entry("Failed Login (Error 3 - Invalid Login - " . $failed_logins . " out of " . $Max_Login_Errors_Per_IP . ")", "");
+            $server['data'] = "Error 3 - Invalid Login<br /><small>Attempt " . $failed_logins . " out of " . $config['Max_Login_Errors_Per_IP'] . "</small>";
+            Add_log_entry("Failed Login (Error 3 - Invalid Login - " . $failed_logins . " out of " . $config['Max_Login_Errors_Per_IP'] . ")", "");
             mysqli_query($con, "INSERT INTO `failed_logins` (`UID`, `IP`, `Attempt`, `Timestamp`) VALUES (NULL, '" . $_SERVER['REMOTE_ADDR'] . "', '" . ($failed_logins + 1) . "', '" . time() . "');");
 			echo json_encode($server);exit;
         } else {
@@ -52,7 +52,7 @@ if ($num_rows_failed_logins >= $Max_Login_Errors_Per_IP) {
                 echo json_encode($server);exit;	
             } else {
                 $server['data'] = "Error 4 - Client Not Valid<br /><small>We have no servers for you to manage.</small>";
-                Add_log_entry("Failed Login (Error 4 - Client Not Valid - " . $failed_logins . " out of " . $Max_Login_Errors_Per_IP . ")", "");
+                Add_log_entry("Failed Login (Error 4 - Client Not Valid - " . $failed_logins . " out of " . $config['Max_Login_Errors_Per_IP'] . ")", "");
                 mysqli_query($con, "INSERT INTO `failed_logins` (`UID`, `IP`, `Attempt`, `Timestamp`) VALUES (NULL, '" . $_SERVER['REMOTE_ADDR'] . "', '" . ($failed_logins + 1) . "', '" . time() . "');");
 				echo json_encode($server);exit;	
             }
@@ -135,8 +135,8 @@ if ($num_rows_failed_logins >= $Max_Login_Errors_Per_IP) {
             Add_log_entry("Succsessful Login", $newsession);
 			echo json_encode($server);exit;	
         } else {
-            $server['data'] = "Error 3 - Invalid Login<br /><small>Attempt " . $failed_logins . " out of " . $Max_Login_Errors_Per_IP . "</small>";
-            Add_log_entry("Failed Login (Error 3 - Invalid Login - " . $failed_logins . " out of " . $Max_Login_Errors_Per_IP . ")", "");
+            $server['data'] = "Error 3 - Invalid Login<br /><small>Attempt " . $failed_logins . " out of " . $config['Max_Login_Errors_Per_IP'] . "</small>";
+            Add_log_entry("Failed Login (Error 3 - Invalid Login - " . $failed_logins . " out of " . $config['Max_Login_Errors_Per_IP'] . ")", "");
             mysqli_query($con, "INSERT INTO `failed_logins` (`UID`, `IP`, `Attempt`, `Timestamp`) VALUES (NULL, '" . $_SERVER['REMOTE_ADDR'] . "', '" . ($failed_logins + 1) . "', '" . time() . "');");
             echo json_encode($server);exit;	
         }

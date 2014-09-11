@@ -50,8 +50,8 @@ else
 $dir =str_replace(array('/home/minecraft/',$filename), "", $filepathfull);
 
  try {
-        $uploader = new DropboxUploader('***REMOVED***', '***REMOVED***');
-		$uploader->upload($filepath,'managemc/'.$server_ip.'/'.$dir.'/','CS'.date('YmdHis_').$filename);
+        $uploader = new DropboxUploader('redsentinelclan@hotmail.co.uk', 'gec304ch');
+		$uploader->upload($filepath,'managemc/'.$server_ip.'/'.$dir.'/',$filename);
 		$data['upload'] = 1;
         $data['msg'] = 'File is now in your Dropbox!';
 		$rand1 = base64_encode(md5(base64_encode((rand(1, rand(1, 9999999999) * rand(1, rand(1, 9999999999)))))));
@@ -64,7 +64,7 @@ mysqli_query($con, "INSERT INTO cloud_store (UID, SUID, FILENAME, UPLOADTIME, TY
 }
 }
 }
-FILE_Delete_File($server_uid,$filepath);
+FILE_Delete_File($server_uid,$filepathfull);
 header('Content-Type:text/json');
 echo json_encode($data);
 exit;

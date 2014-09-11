@@ -9,10 +9,15 @@ echo "<script src='/js/loadjs.php?scripts=" . $encoded = base64_encode($serializ
 }
 
 function CORE_Compress(){
+global $config;
+
+if($config['compress_enabled'] == 'TRUE')
+{
 $c = ini_get( 'zlib.output_compression' );
 if(empty($c)){
 ini_set( 'zlib.output_compression', '1' );
-ini_set( 'zlib.output_compression_level', '9' );
+ini_set( 'zlib.output_compression_level', $config['compress_level'] );
+}
 }	
 }
 function CORE_bytes($bytes, $force_unit = NULL, $format = NULL, $si = TRUE) {
@@ -56,11 +61,11 @@ if (0 === strpos($final, 'and ')) {$final = str_replace("and ", "", $final);}
 return $final;
 }
 
-//Function Check_Force_SSL - This function will check to see if $Force_SSL in /config.php is TURE and then enforce this if true
+//Function Check_Force_SSL - This function will check to see if $config['Force_SSL'] in /config.php is TURE and then enforce this if true
 function CORE_Check_Force_SSL()
 {
-global $Force_SSL, $ManageMC_Domain;
-if($Force_SSL == TRUE) {
+global $config;
+if($config['Force_SSL'] == 'TRUE' && $config['Max_Login_Errors_Reset'] == 'TRUE') {
 if(isset($_SERVER['HTTPS'])) {
 if('on' == strtolower($_SERVER['HTTPS'])){return true;} //SSL is being used
 if('1' == $_SERVER['HTTPS']){return true;} //SSL is being used
@@ -69,9 +74,11 @@ elseif (isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'])) {r
 header('location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '');
 return false;//SSL is not being used so redirect
 }
+if($config['Max_Login_Errors_Reset'] == 'TRUE') {
 //Check that we are on the correct domain
-if ($ManageMC_Domain == $_SERVER['HTTP_HOST']) {return true;}
-else{header('location: http://' . $ManageMC_Domain . $_SERVER['REQUEST_URI'] . '');}
+if ($config['Max_Login_Errors_Reset'] == $_SERVER['HTTP_HOST']) {return true;}
+else{header('location: http://' . $config['Max_Login_Errors_Reset'] . $_SERVER['REQUEST_URI'] . '');}
+}
 }
 
 //Function Render_Sidebar - This function render the sidebar and add the class "active" is the page is in the sidebar
@@ -144,6 +151,9 @@ echo '
 <h5><b>My Settings</b></h5>
 <li><a href="/mysettings.php?page=passwd">Change Password</a></li>
 <li class="divider"></li>
+<h5><b>Global Settings</b></h5>
+<li><a href="/settings.php">General</a></li>
+<li class="divider"></li>
 <li><a href="/logout.php">Logout</a></li>
 </ul>
 </li>
@@ -158,6 +168,9 @@ echo '
 //Function Render_Top - This function render the head of the page
 function CORE_Render_Top($name)
 {
+
+header('Connection: Keep-Alive');
+
 echo '<! /START CORE_Render_Top()/ ->
 <!DOCTYPE html>
 <html lang="en">
@@ -179,12 +192,21 @@ echo '<! /START CORE_Render_Top()/ ->
 //Function Render_Top - This function render the fotter of the page, should include jquery.
 function CORE_Render_Footer()
 {
-global $GoogleCND;
+global $config;
 echo '</div><!-- /container -->
 </body>
 </html>';
-if($GoogleCND === TRUE){echo'<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>';}
+if($config['jQuery_cdn'] == 'NONE'){echo'<script src="js/jquery.min.js"></script>';}
+elseif($config['jQuery_cdn'] == 'GOOGLE'){echo'<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>';}
+elseif($config['jQuery_cdn'] == 'MICROSOFT'){echo'<script src="//ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>';}
+elseif($config['jQuery_cdn'] == 'CLOUDFLARE'){echo'<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>';}
 else{echo'<script src="js/jquery.min.js"></script>';}
-echo'<script src="js/bootstrap.js"></script>';
+echo '<script>// Fallback to loading jQuery from a local path if the CDN is unavailable(window.jQuery || document.write(\'<script src="/scripts/jquery-1.9.0.min.js"><\/script>\'));  </script>;';
+
+if($config['jQuery_cdn'] == 'NONE'){echo'<script src="js/bootstrap.js"></script>';}
+elseif($config['jQuery_cdn'] == 'CLOUDFLARE'){echo'<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>';}
+elseif($config['jQuery_cdn'] == 'MAXCDN'){echo'<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>';}
+else{echo'<script src="js/bootstrap.js"></script>';}
+echo '<script>// Fallback to loading bootstrap from a local path if the CDN is unavailable(window.jQuery || document.write(\'<script src="/scripts/jquery-1.9.0.min.js"><\/script>\'));  </script>;';
 }
 ?>

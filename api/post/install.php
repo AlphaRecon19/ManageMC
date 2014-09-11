@@ -17,8 +17,9 @@ if (!$ssh->login("root", $_GET['password'])) {
 } else {
     if ($stage == 1) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL1' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
-
-		$return["data"] = htmlentities($ssh->exec("yum update -y"));
+		$return["data"] = htmlentities($ssh->exec("rm /etc/localtime"));
+		$return["data"] .= htmlentities($ssh->exec("ln -s /usr/share/zoneinfo/Europe/London /etc/localtime"));
+		$return["data"] .= htmlentities($ssh->exec("yum update -y"));
     }
     if ($stage == 2) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL2' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
@@ -29,12 +30,12 @@ if (!$ssh->login("root", $_GET['password'])) {
         $return["data"] = htmlentities($ssh->exec("service managemc stop"));
 		$return["data"] .= htmlentities($ssh->exec("userdel -r minecraft"));
 		$return["data"] .= htmlentities($ssh->exec('rm -rf /home/minecraft'));
+		
     }
     if ($stage == "3a") {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL3a' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
 		$return["data"] = htmlentities($ssh->exec('rm -rf /etc/init.d/managemc'));
         $return["data"] .= htmlentities($ssh->exec('wget -O /etc/init.d/managemc "http://api.alpha.managemc.com/managemc"'));
-		$return["data"] .= htmlentities($ssh->exec("chmod a+x /etc/init.d/managemc") . '<br />');
     }
     if ($stage == 4) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL4' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
@@ -58,10 +59,14 @@ if (!$ssh->login("root", $_GET['password'])) {
 		$return["data"] .= htmlentities($ssh->exec("chkconfig vsftpd on"));
 		
 		$return["data"] .= htmlentities($ssh->exec("(crontab -l ; echo '@reboot /etc/init.d/managemc start') | crontab -") . '<br />');
+
     }
     if ($stage == 5) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL5' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
         $return["data"] = htmlentities($ssh->exec("useradd minecraft -U"));
+		$return["data"] .= htmlentities($ssh->exec('wget -O /home/minecraft/settings "http://api.alpha.managemc.com/settings"'));
+		$return["data"] .= htmlentities($ssh->exec("chmod a+x /etc/init.d/managemc"));
+		$return["data"] .= htmlentities($ssh->exec("chmod a+x /home/minecraft/settings"));
     }
     if ($stage == 6) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL6' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
@@ -72,8 +77,8 @@ if (!$ssh->login("root", $_GET['password'])) {
     }
     if ($stage == 7) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL7' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");
-        $return["data"] = htmlentities($ssh->exec("mkdir /home/minecraft/backup"));
-		$return["data"] .= htmlentities($ssh->exec("chown minecraft:minecraft /home/minecraft/backup"));
+        $return["data"] = htmlentities($ssh->exec("mkdir /home/minecraft/snapshots"));
+		$return["data"] .= htmlentities($ssh->exec("chown minecraft:minecraft /home/minecraft/snapshots"));
     }
     if ($stage == 8) {
         $result         = mysqli_query($con, "UPDATE servers SET STATUS='INSTALL8' WHERE IP='" . $_GET['ip'] . "' AND ROOTPASSWORD='" . $_GET['password'] . "'");

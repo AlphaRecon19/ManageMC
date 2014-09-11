@@ -45,7 +45,7 @@ function Get_MANAGEMC_VERSION_SSH($server_uid)
 	$server_ip = Get_IP($server_uid);
 	$password = Get_ROOTPASSWORD($server_uid);
 	$ssh = new Net_SSH2($server_ip);
-	if (!$ssh->login("root", $password)){Add_log_entry("ERROR controling the server " . $server_IP . " - Login Fail", "System");return "login fail";}
+	if (!$ssh->login("root", $password)){Add_log_entry("ERROR contriving the server " . $server_IP . " - Login Fail", "System");return "login fail";}
 	global $con;
 	return $ssh->exec("service managemc version s");	
 }
@@ -61,5 +61,12 @@ function Update_MANAGEMC_VERSION($server_uid, $ManageMC_v)
 	global $con;
     $result = mysqli_query($con, "UPDATE servers SET MANAGEMC_VERSION='". $ManageMC_v ."' WHERE `UID`='$server_uid'");	
 }
-
+function Control_Snapshot($server_uid)
+{
+	global $con;
+	$ssh = new Net_SSH2(Get_IP($server_uid));
+	if (!$ssh->login("root", Get_ROOTPASSWORD($server_uid))){Add_log_entry("ERROR controlling the server " . $server_IP . " - Login Fail", "System");return "login fail";}
+	mysqli_query($con, "UPDATE servers SET LAST_SNAP='". time() ."' WHERE UID='" . $server_uid  . "'");
+	return $ssh->exec("service managemc backup");
+}
 ?>

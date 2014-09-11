@@ -208,7 +208,7 @@ echo CORE_GetJSFiles("lib/switchery/switchery.min.js","js/globalize.min.js","js/
 <?php
 CORE_Render_Footer();
 ?><script>
-function decode_base64(e){var t={},n,r,i=[],s="",o=String.fromCharCode;var u=[[65,91],[97,123],[48,58],[43,44],[47,48]];for(z in u){for(n=u[z][0];n<u[z][1];n++){i.push(o(n))}}for(n=0;n<64;n++){t[i[n]]=n}for(n=0;n<e.length;n+=72){var a=0,f,l,c=0,h=e.substring(n,n+72);for(l=0;l<h.length;l++){f=t[h.charAt(l)];a=(a<<6)+f;c+=6;while(c>=8){s+=o((a>>>(c-=8))%256)}}}return s}$(document).ready(function(){$.ajax({type:"GET",dataType:"JSON",url:"/api/get/listservers.php",success:function(e){$("#loaderImage").toggle();if(e.servers!=0){$("#listservers").html(decode_base64(e.serverlist))}else{$("#listservers").html('<center>We found no servres in the database. Why not add one <a href="server_management.php?page=AddServer">here</a></center>')}}})})</script>
+function decode_base64(e){var t={},n,r,i=[],s="",o=String.fromCharCode;var u=[[65,91],[97,123],[48,58],[43,44],[47,48]];for(z in u){for(n=u[z][0];n<u[z][1];n++){i.push(o(n))}}for(n=0;n<64;n++){t[i[n]]=n}for(n=0;n<e.length;n+=72){var a=0,f,l,c=0,h=e.substring(n,n+72);for(l=0;l<h.length;l++){f=t[h.charAt(l)];a=(a<<6)+f;c+=6;while(c>=8){s+=o((a>>>(c-=8))%256)}}}return s}$(document).ready(function(){$.ajax({type:"GET",dataType:"JSON",url:"/api/get/listservers.php",success:function(e){$("#loaderImage").toggle();if(e.num_rows!=0){$("#listservers").html(decode_base64(e.serverlist))}else{$("#listservers").html('<center>We found no servres in the database. Why not add one <a href="server_management.php?page=AddServer">here</a></center>')}}})})</script>
 <?php
 exit;}//End of ListServers
 if ($page == "AddServer") {
