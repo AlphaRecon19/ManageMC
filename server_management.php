@@ -9,169 +9,84 @@ CORE_Render_Top("Server Management");
 CORE_Render_Navbar();
 CORE_Render_Sidebar();
 if (isset($_GET['page']) && !empty($_GET['page'])) {
-$page = $_GET['page'];if ($page == "ManageServer") {?>
-<!-- Modal -->
-<div class="modal fade" id="updatemanagemc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-<h2 class="modal-title" id="myModalLabel">
-<span class="glyphicon glyphicon glyphicon-download-alt"></span>Updating ManageMC</h2> <img src="images/712.GIF" id="loading_img" width="32" height="32" style="float: right; position: relative; margin-top: -40px; display:none;"/></div>
-<div class="modal-body" style="width:500px; margin-left: auto; margin-right: auto ;">
-<center>
-<span id="updatemanagemc_version"></span>
-<span id="updatemanagemc_text"><p>Please wait while ManageMC is being updated on this node</p></span>
-</div>
-</div>
-</center>
-</div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<div class="col-md-5" style="height: 580px;">
-<div class="panel panel-info">
-<div class="panel-heading"><h3>Live Server Load</h3>
-</div>
-<div class="panel-body">
-<center><div style="color:#EEE;background:#222;width:320px;/* padding:20px; */border-radius:15px;text-align: center;">
-<div id="knobinner" style="position:relative;width:350px;margin:auto;float:left; display:none;">
-<div style="position:absolute;left:10px;top:10px">
-<input class="knob load0" data-bgcolor="#333" data-displayinput="false" data-fgcolor="#ffec03" data-height="300" data-max="100" data-min="0" data-thickness=".3" data-width="300">
-</div>
-<div style="position:absolute;left:60px;top:60px;">
-<input class="knob load1" data-bgcolor="#333" data-displayinput="false" data-height="200" data-max="100" data-min="0"                                data-thickness=".45" data-width="200" id="datalol1">
-</div>
-<div style="position:absolute;left:110px;top:110px">
-<input class="knob load2" data-bgcolor="#333" data-displayinput="false" data-fgcolor="rgb(127, 255, 0)" data-height="100" data-max="100" data-min="0" data-thickness=".7" data-width="100">
-</div>
-</div>
-<div id="newa" style="overflow:hidden;float:right;width:300px;height:310px;"></div><center id="knobtext" style="position:relative;bottom:0;padding-top:350px;margin:auto;color:#222;overflow:none; display:none;">
-<p><span style="color:#EEE;">Load avg: </span>
-<span style="background-color:#ffec03">1 min: <span id="load0"></span></span>
-<span style="background-color:#87CEEB">5 min: <span id="load1"></span></span>
-<span style="background-color:rgb(127, 255, 0);">15 min: <span id="load2"></span>
-</span></p>
-</center>
-<div style="clear:both"></div>
-<br />
-</div>
-</center>
-</div>
-</div><!-- End Panel -->
-</div>
-<div class="col-md-5">
-<div class="panel panel-info">
-<div class="panel-heading">
-<h3>Server infomation</h3>
-</div>
-<div class="panel-body">
-<div class="table-responsive">
-<table class="table tableright table-striped">
-<tbody>
-<tr>
-<td><center><b>STATUS</b></center></td>
-<td><center><span id="STATUS_Table"><img src="images/712.GIF" width="32" height="32"></span></center></td>
-</tr>
-<tr>
-<td><center><b>IP</b></center></td>
-<td><center><span id="IP_Table"><img src="images/712.GIF" width="32" height="32"></span> <span class="glyphicon glyphicon-signal"></span><span id="ms_Table"><img src="images/712.GIF" width="32" height="32"></span>ms</center></td>
-</tr>
-<tr>
-<td><center><b>Disk space</b></center></td>
-<td><center><div class="progress"><div class="progress-bar" role="progressbar" id="diskspaceb" style="width: 0%;"><b><span id="diskspacevalue"></span></b></div></div></center><center><span id="diskused"><img src="images/712.GIF" width="32" height="32"></span> of <span id="disktotal"><img src="images/712.GIF" width="32" height="32"></span> Used</center></td>
-</tr>
-<tr>
-<td><center><b>World Size</b></center></td>
-<td><center><span id="STATUS_WorldSize"><img src="images/712.GIF" width="32" height="32"></span></center></td>
-</tr>
-<tr>
-<td><center><b>ManageMC Version</b></center></td>
-<td><center><span id="ManageMCVersion"><img src="images/712.GIF" width="32" height="32"></span></center><center><br /><button class="btn btn-info" style="margin-top: -20px;" id="UpdateManageMC"><span class="glyphicon glyphicon-download-alt"></span> Update ManageMC</button></center></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div><!-- End Panel -->
-</div>
-<div class="row" style="margin-right: 1px; padding-left: 10px;">
-<div class="col-md-12">
-<div class="panel panel-info">
-<div class="panel-heading">
-<h3>Command Center</div>
-<div class="panel-body">
-<div class="alert alert-danger" id="NewWarning" style="display:none;">
-<strong>Warning!:</strong> This server still needs to be claimed by a client. Here is the <button class="btn btn-warning"><span class="glyphicon glyphicon-user"></span> Claim URL</button></div>          
-<button id="control_start" class="btn btn-success" disabled="disabled"><span class="glyphicon glyphicon-play"></span> Start</button>
-<button id="control_stop" class="btn btn-danger" disabled="disabled"><i class="glyphicon glyphicon-stop"></i> Stop</button>
-<button id="control_restart" class="btn btn-info" disabled="disabled"><i class="glyphicon glyphicon-refresh"></i> Restart</button>
-<button id="control_reboot" class="btn btn-danger" disabled="disabled"><i class="glyphicon glyphicon-refresh"></i> Reboot</button>
-<a href="?page=DeleteServer&uid=<?php echo $_GET['uid']; ?>"><button id="control_delete" class="btn btn-danger" disabled="disabled"><i class="glyphicon glyphicon-trash"></i> Delete</button></a><img src="/images/712.GIF" width="32" height="32" style="margin: 0; position: relative; float: right; display:none;" id="loading">
-Show Log: <input type="checkbox" class="js-switch" id="toggle_log" checked />
-Auto Refresh: <input type="checkbox" class="js-switch" id="auto_refresh" />
-Curently: <span id="status"></span><span><img src="/images/712.GIF" width="32" height="32" style="margin: 0; display:none;" id="status_img"> <button id="control_refresh" class="btn" disabled="disabled"><i class="glyphicon glyphicon-refresh"></i></button></span>
-<div id="last_rersault" style="background-color: #696969; color: #0F0; width: 100%; max-height: 330px; margin-top: 10px; font-weight: 500; padding: 5px; border-radius: 5px; overflow: scroll; overflow-y: auto; overflow-x: auto;"></div>
-</div>
-</div><!-- End Panel -->
-</div><!-- End col-md-12 -->
-<div class="col-md-6">
-<div class="panel panel-info">
-<div class="panel-heading"><h3>Ram Free in the last 15 mins</h3>
-<a href="/server_management.php?page=Graph&uid=<?php echo $_GET['uid']; ?>&res=1&time=15&type=free"><button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;"><span class="glyphicon glyphicon-search"></span> View More</button></a></div>
-<div class="panel-body">        
-<center><div class="content"><div class="pane"><div id="chartContainerfree" class="case-container" style="width: 100%; height: 440px;"></div></div></div></center>
-</div>
-</div><!-- End Panel -->
-</div><!-- End col-md-6 -->
-<div class="col-md-6">
-<div class="panel panel-info">
-<div class="panel-heading"><h3>MS in the last 15 mins</h3>
-<a href="/server_management.php?page=Graph&uid=<?php echo $_GET['uid']; ?>&res=1&time=15&type=ms"><button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;"><span class="glyphicon glyphicon-search"></span> View More</button></a></div>
-<div class="panel-body">        
-<center><div class="content"><div class="pane"><div id="chartContainerms" class="case-container" style="width: 100%; height: 440px;"></div></div></div></center>
-</div>
-</div><!-- End Panel -->
-</div><!-- End col-md-6 -->
-<div class="col-md-6">
-<div class="panel panel-info">
-<div class="panel-heading"><h3>Server Load in the last 15 mins</h3><a href="/server_management.php?page=Graph&uid=<?php echo $_GET['uid']; ?>&res=1&time=15&type=load"><button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;"><span class="glyphicon glyphicon-search"></span> View More</button></a></div>
-<div class="panel-body">        
-<center><div class="content"><div class="pane"><div id="chartContainerload" class="case-container" style="width: 100%; height: 440px;"></div></div></div></center>
-</div>
-</div><!-- End Panel -->
-</div><!-- End col-md-6 -->
-<div class="col-md-6">
-<div class="panel panel-info">
-<div class="panel-heading"><h3>Total players online in the last 15 mins</h3><a href="/server_management.php?page=Graph&uid=<?php echo $_GET['uid']; ?>&res=1&time=15&type=players"><button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;"><span class="glyphicon glyphicon-search"></span> View More</button></a></div>
-<div class="panel-body">        
-<center><div class="content"><div class="pane"><div id="chartContainerplayers" class="case-container" style="width: 100%; height: 440px;"></div></div></div></center>
-</div>
-</div><!-- End Panel -->
-</div><!-- End col-md-6 -->
-<div class="col-md-6">
-<div class="panel panel-info">
-<div class="panel-heading"><h3>Filemanager </h3><a href="/server_management.php?page=Filemanager&uid=<?php echo $_GET['uid']; ?>"><button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;"><span class="glyphicon glyphicon-folder-open"></span> Filemanager</button></a></div>
-<div class="panel-body" style="padding: 0px;">        
-<div id="filemanager"  style="width:100%; height: 500px; overflow: scroll; overflow-y: auto; overflow-x: auto;"><center><img src="images/712.GIF" width="32" height="32" style="margin: 10px;"></center></div>
-</div>
-</div><!-- End Panel -->
-</div><!-- End col-md-6 -->
-<div class="col-md-6">
-<div class="panel panel-info">
-<div class="panel-heading"><h3>The WayBack Tool</h3><a href="/server_management.php?page=Graph&uid=<?php echo $_GET['uid']; ?>&res=1&time=15&type=players"><button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;"><span class="glyphicon glyphicon-search"></span> View More</button></a></div>
-<div class="panel-body" style="padding: 0px;">        
-<div id="twbt"  style="width:100%; height: 500px; overflow: scroll; overflow-y: auto; overflow-x: auto;"><center><img src="images/712.GIF" width="32" height="32" style="margin: 10px;"></center></div>
-</div>
-</div><!-- End Panel -->
-</div><!-- End col-md-6 -->
-</div><!-- /row -->
-<?php CORE_Render_Footer();
-echo CORE_GetJSFiles("lib/switchery/switchery.min.js","js/globalize.min.js","js/dx.chartjs.js","js/knob.js");
+$page = $_GET['page'];if ($page == "ManageServer") {
+include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/server.php');
+$serverinfo = get_server_infomation($_GET['uid']);
 ?>
-<script src="js/server_management_manageserver.php?uid=<?php echo $_GET['uid']; ?>" ></script>
+<div class="row" style="padding-left:25px;">
+    <div class="col-md-5">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3>Server Infomation</h3>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table tableright table-striped">
+                        <tbody>
+                            <tr>
+                                <td><center><b>STATUS</b></center></td>
+                                <td><center><?php echo $serverinfo['STATUS']?></center></td>
+                            </tr>
+                            <tr>
+                                <td><center><b>IP</b></center></td>
+                                <td><center><?php echo $serverinfo['IP']?> <span class="glyphicon glyphicon-signal"></span> <?php echo $serverinfo['MS']?>ms</center></td>
+                            </tr>
+                            <tr>
+                                <td><center><b>Disk space</b></center></td>
+                                <td><center><div class="progress"><div class="progress-bar" role="progressbar" id="diskspaceb" style="width: 0%;"><b><span id="diskspacevalue"></span></b></div></div></center><center><span id="diskused"><img src="images/712.GIF" width="16" height="16"></span> of <span id="disktotal"><img src="images/712.GIF" width="16" height="16"></span> Used</center></td>
+                            </tr>
+                            <tr>
+                                <td><center><b>World Size</b></center></td>
+                                <td><center><span id="worldsize"><img src="images/712.GIF" width="16" height="16"></span></center></td>
+                                </tr>
+                            <tr>
+                                <td><center><b>ManageMC Version</b></center></td>
+                                <td><center><span ><?php echo $serverinfo['MANAGEMC_VERSION']?></center><center><br /><button class="btn btn-info" style="margin-top: -20px;" id="UpdateManageMC"><span class="glyphicon glyphicon-download-alt"></span> Update ManageMC</button></center></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><!-- End Panel -->
+    </div>
+    
+     <div class="col-md-5">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3>Server Control</h3>
+            </div>
+            <div class="panel-body">
+                
+            </div>
+        </div><!-- End Panel -->
+    </div>
+    
+</div><!-- End row -->
+
+<?php CORE_Render_Footer();
+//echo CORE_GetJSFiles("lib/switchery/switchery.min.js","js/globalize.min.js","js/dx.chartjs.js","js/knob.js");
+?>
+<script>
+    $.ajax({
+        type: "GET",
+        url: "/api/get/server_management_manageserver.php?uid=<?php echo $_GET['uid']; ?>",
+        success: function (data) {
+            if (data.CLIENT_ID == "nill") {
+                $("#NewWarning").css("display", "block");
+            }
+            $("#worldsize").html(data.MCSIZE);
+            $("#diskspaceb").css("width", data.DISKFREEP);
+            $("#diskspacevalue").html(data.DISKFREEP);
+            $("#disktotal").html(data.DISKTOTAL);
+            $("#diskused").html(data.DISKUSED);
+        }
+    });
+</script>
+<!--
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=load&time=15&res=1"></script>
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=ms&time=15&res=1"></script>
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=free&time=15&res=1"></script>
-<script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=players&time=15&res=1"></script>
+<script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=players&time=15&res=1"></script>-->
 <?php exit;}if ($page == "ListServer") {?>
 <div class="row" style="padding-left:25px;">
 <div class="col-md-10">
@@ -401,7 +316,7 @@ else
 <div class="panel panel-danger">
 <div class="panel-heading"><h3>Invalid Page</h3></div>
 <div class="panel-body">        
-<center>You have provided an invalid page request. Please check that link and try again.
+<center>You have provided an invalid page request. Please check that link and try again.</center>
 </div>
 </div><!-- End Panel -->
 </div><!-- End col-md-6 --></center>
@@ -412,12 +327,11 @@ exit;
 elseif(empty($_GET['uid']))
 {
 ?>
-
 <div class="col-md-10">
 <div class="panel panel-danger">
 <div class="panel-heading"><h3>Invalid Page</h3></div>
 <div class="panel-body">        
-<center>You have provided an invalid Server UID. Please check that link and try again or click <a href="/server_management.php?page=ListServer">here</a> to go back to the server list.
+<center>You have provided an invalid Server UID. Please check that link and try again or click <a href="/server_management.php?page=ListServer">here</a> to go back to the server list.</center>
 </div>
 </div><!-- End Panel -->
 </div><!-- End col-md-6 --></center>

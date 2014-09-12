@@ -13,8 +13,7 @@ CORE_Render_Sidebar();
 ?>
 
 <div class="row" style="padding-left:25px;">   
-    
-    <div class="col-md-10">
+<div class="col-md-10">
  <div class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
             <ul class="nav navbar-nav navbar-left">
@@ -274,7 +273,6 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
     <?php }
 CORE_Render_Footer();
 ?>
-
 <script>
 function save_form($ids, $title)
 {

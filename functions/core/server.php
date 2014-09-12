@@ -3,6 +3,24 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/mysql.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/log.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/lib/phpseclib/Net/SSH2.php');
 $con = mysql_mysqli_connect();
+
+
+
+function get_server_infomation($server_uid) {
+    global $con;
+    $result = mysqli_query($con, "SELECT * FROM `servers` WHERE UID='$server_uid'");
+    $row = mysqli_fetch_array($result);
+    $array = array('IP' => $row['IP'],
+		   'MS' => Get_MS($server_uid),
+		   'STATUS' => $row['STATUS'],
+		   'MANAGEMC_VERSION' => $row["MANAGEMC_VERSION"]
+		   );
+    return $array;
+}
+
+
+
+
 function Get_IP($server_uid)
 {
     global $con;
@@ -16,6 +34,13 @@ function Get_ROOTPASSWORD($server_uid)
     $result = mysqli_query($con, "SELECT * FROM `servers` WHERE UID='$server_uid'");
 	$row = mysqli_fetch_array($result);
 	return $row['ROOTPASSWORD'];
+}
+function Get_CLIENT_ID($server_uid)
+{
+    global $con;
+    $result = mysqli_query($con, "SELECT * FROM `servers` WHERE UID='$server_uid'");
+	$row = mysqli_fetch_array($result);
+	return $row['CLIENT_ID'];
 }
 function Get_ONLINE_PLAYER_NUMBER($server_uid)
 {
@@ -59,7 +84,7 @@ function Get_MANAGEMC_VERSION_DB($server_uid)
 function Update_MANAGEMC_VERSION($server_uid, $ManageMC_v)
 {
 	global $con;
-    $result = mysqli_query($con, "UPDATE servers SET MANAGEMC_VERSION='". $ManageMC_v ."' WHERE `UID`='$server_uid'");	
+	$result = mysqli_query($con, "UPDATE servers SET MANAGEMC_VERSION='". $ManageMC_v ."' WHERE `UID`='$server_uid'");	
 }
 function Control_Snapshot($server_uid)
 {

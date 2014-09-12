@@ -201,12 +201,11 @@ elseif($config['jQuery_cdn'] == 'GOOGLE'){echo'<script src="//ajax.googleapis.co
 elseif($config['jQuery_cdn'] == 'MICROSOFT'){echo'<script src="//ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>';}
 elseif($config['jQuery_cdn'] == 'CLOUDFLARE'){echo'<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>';}
 else{echo'<script src="js/jquery.min.js"></script>';}
-echo '<script>// Fallback to loading jQuery from a local path if the CDN is unavailable(window.jQuery || document.write(\'<script src="/scripts/jquery-1.9.0.min.js"><\/script>\'));  </script>;';
-
+echo '<script>// Fallback to loading jQuery from a local path if the CDN is unavailable(window.jQuery || document.write(\'<script src="/scripts/jquery-1.9.0.min.js"><\/script>\'));  </script>';
 if($config['jQuery_cdn'] == 'NONE'){echo'<script src="js/bootstrap.js"></script>';}
 elseif($config['jQuery_cdn'] == 'CLOUDFLARE'){echo'<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>';}
 elseif($config['jQuery_cdn'] == 'MAXCDN'){echo'<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>';}
 else{echo'<script src="js/bootstrap.js"></script>';}
-echo '<script>// Fallback to loading bootstrap from a local path if the CDN is unavailable(window.jQuery || document.write(\'<script src="/scripts/jquery-1.9.0.min.js"><\/script>\'));  </script>;';
+echo '<script>// Fallback to loading bootstrap from a local path if the CDN is unavailable(window.jQuery || document.write(\'<script src="/scripts/jquery-1.9.0.min.js"><\/script>\'));  </script>';
 }
 ?>
