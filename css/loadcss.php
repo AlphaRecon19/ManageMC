@@ -41,6 +41,7 @@ $cssFiles = array(
   "bootstrap.css",
   "dashboard.css",
   "signin.css",
+  "jquery.dataTables.min.css",
   $_SERVER['DOCUMENT_ROOT'] . "/lib/switchery/switchery.min.css",
   "font-awesome.min.css"
 );
