@@ -13,14 +13,56 @@ $page = $_GET['page'];if ($page == "ManageServer") {
 include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/server.php');
 $serverinfo = get_server_infomation($_GET['uid']);
 ?>
+<style>
+input:focus {
+    outline: none;
+}
+</style>
 <div class="row" style="padding-left:25px;">
-    <div class="col-md-5">
+    <div class="col-md-10">
+	<div class="navbar navbar-default" role="navigation">
+	    <div class="container-fluid">
+		<ul class="nav navbar-nav navbar-left">
+		<?php	    
+		    if(!isset($_GET['server_page'])){
+			$page = "info";
+		    }else{
+			$page = $_GET['server_page'];
+		    }
+		    if ($page == "" || $page == "info" ) {
+			echo '<li class="active"><a href="/server_management.php?page=ManageServer&server_page=info&uid='.$_GET['uid'].'">';
+		    }else{
+			echo '<li><a href="/server_management.php?page=ManageServer&server_page=info&uid='.$_GET['uid'].'">';
+		    }
+		    echo 'Info</a></li>';
+			
+		    if ($page == "graphs") {
+			echo '<li class="active"><a href="/server_management.php?page=ManageServer&server_page=graphs&uid='.$_GET['uid'].'">';
+		    }else{
+	    		echo '<li><a href="/server_management.php?page=ManageServer&server_page=graphs&uid='.$_GET['uid'].'">';
+		    }
+		    echo 'Graphs</a></li>';	
+		    
+		    if ($page == "/settings.php?page=advanced") {
+			echo '<li class="active"><a href="/settings.php?page=advanced">';
+		    }else{
+			echo '<li><a href="/settings.php?page=advanced">';
+		    }
+		    echo 'Advanced</a></li>';
+		    ?>
+		</ul>
+	    </div><!--/.container-fluid -->
+	</div>
+    </div>    
+    <?php
+    if ($page == "info" ) {?>
+    <div class="col-md-10">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h3>Server Infomation</h3>
             </div>
             <div class="panel-body">
-                <div class="table-responsive">
+                <div class="table-responsive" style="min-height: 420px;">
                     <table class="table tableright table-striped">
                         <tbody>
                             <tr>
@@ -49,18 +91,58 @@ $serverinfo = get_server_infomation($_GET['uid']);
             </div>
         </div><!-- End Panel -->
     </div>
+    <?php } elseif ($page == "graphs" ) {?>
+    <div class="col-md-10">
+	<div class="panel panel-info">
+	    <div class="panel-heading">
+		<h3>Free RAM</h3>
+		<a href="/server_management.php?page=Graph&uid=<?php echo $_GET['uid']; ?>&res=1&time=15&type=free">
+		    <button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;">
+			<span class="glyphicon glyphicon-search"></span> View More
+		    </button>
+		</a>
+	    </div>
+	    <div class="panel-body">
+		<center>
+		    <div class="content">
+			<div class="pane">
+			    <div id="chartContainerfree" class="case-container" style="width: 100%; height: 370px;">
+			    </div>
+			</div>
+		    </div>
+		</center>
+	    </div>
+	</div><!-- End Panel -->
+    </div><!-- End col-md-5 -->
     
-     <div class="col-md-5">
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                <h3>Server Control</h3>
-            </div>
-            <div class="panel-body">
-                
-            </div>
-        </div><!-- End Panel -->
-    </div>
+</div><!-- End row -->
+<div class="row">
     
+    <div class="col-md-10 col-md-offset-2">
+	<div class="panel panel-info">
+	    <div class="panel-heading">
+		<h3>Server Ping</h3>
+		<a href="/server_management.php?page=Graph&uid=<?php echo $_GET['uid']; ?>&res=1&time=15&type=free">
+		    <button class="btn btn-info btn-lg pull-right" style="margin-top: -45px;">
+			<span class="glyphicon glyphicon-search"></span> View More
+		    </button>
+		</a>
+	    </div>
+	    <div class="panel-body">
+		<center>
+		    <div class="content">
+			<div class="pane">
+			    <div id="chartContainerfree" class="case-container" style="width: 100%; height: 370px;">
+			    </div>
+			</div>
+		    </div>
+		</center>
+	    </div>
+	</div><!-- End Panel -->
+    </div><!-- End col-md-5 -->
+    <?php }?>
+    
+
 </div><!-- End row -->
 
 <?php CORE_Render_Footer();
@@ -81,6 +163,33 @@ $serverinfo = get_server_infomation($_GET['uid']);
             $("#diskused").html(data.DISKUSED);
         }
     });
+	
+	
+	
+	function ssh_push(cmd){
+	$.ajax({
+        type: "GET",
+		dataType:"JSON",
+        url: "/api/get/ssh_push.php?uid=<?php echo $_GET['uid']; ?>&cmd=" + cmd,
+        success: function (data) {
+           	$("#ssh_top").append("[root@managemc ~] # " +  $("#ssh_cmd").val() + "<br />");
+			$("#ssh_top").append(data.responce);
+			$("#ssh_cmd").val("");
+			$("#ssh_cmd").prop('disabled', false);
+        }
+    });
+	}
+	
+	
+	function runScript(e) {
+		if (e.keyCode == 13) {}
+    	if (e.keyCode == 13 && $("#ssh_cmd").val()) {
+			$("#ssh_cmd").prop('disabled', true);
+			ssh_push($("#ssh_cmd").val());
+        	return false;
+   		}
+		
+	}
 </script>
 <!--
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=load&time=15&res=1"></script>
@@ -89,37 +198,40 @@ $serverinfo = get_server_infomation($_GET['uid']);
 <script src="api/get/graph_server.php?uid=<?php echo $_GET['uid']; ?>&type=players&time=15&res=1"></script>-->
 <?php exit;}if ($page == "ListServer") {?>
 <div class="row" style="padding-left:25px;">
-<div class="col-md-10">
-<div class="panel panel-info">
-<div class="panel-heading"><h3>Server List</h3></div>
-<div class="panel-body">
-<div class="table-responsive">
-<table class="table table-striped">
-<thead>
-<tr>
-<th><center>UID</center></th>
-<th><center>STATUS</center></th>
-<th><center>VERSION</center></th>
-<th><center>OWNER</center></th>
-<th><center>IP</center></th>
-<th>Manage</th>
-</tr>
-</thead>
-<tbody id="listservers">
-<tr>
-<td><center><img src="images/712.GIF" width="32" height="32"></center></td>
-<td><center><img src="images/712.GIF" width="32" height="32"></center></td>
-<td><center><img src="images/712.GIF" width="32" height="32"></center></td>
-<td><center><img src="images/712.GIF" width="32" height="32"></center></td>
-<td><center><img src="images/712.GIF" width="32" height="32"></center></td>
-<td><center><img src="images/712.GIF" width="32" height="32"></center></td>
-</tr>
-</tbody>
-</table>
+    <div class="col-md-10">
+	<div class="panel panel-info">
+	    <div class="panel-heading">
+		<h3>Server List</h3>
+	    </div>
+	    <div class="panel-body">
+		<div class="table-responsive">
+		    <table class="table table-striped">
+			<thead>
+			    <tr>
+				<th><center>UID</center></th>
+				<th><center>STATUS</center></th>
+				<th><center>VERSION</center></th>
+				<th><center>OWNER</center></th>
+				<th><center>IP</center></th>
+				<th>Manage</th>
+			    </tr>
+			</thead>
+			<tbody id="listservers">
+			    <tr>
+				<td><center><img src="images/712.GIF" width="32" height="32"></center></td>
+				<td><center><img src="images/712.GIF" width="32" height="32"></center></td>
+				<td><center><img src="images/712.GIF" width="32" height="32"></center></td>
+				<td><center><img src="images/712.GIF" width="32" height="32"></center></td>
+				<td><center><img src="images/712.GIF" width="32" height="32"></center></td>
+				<td><center><img src="images/712.GIF" width="32" height="32"></center></td>
+				</tr>
+			    </tbody>
+		    </table>
+		</div>
+	    </div><!-- End Panel -->
+	</div>
+    </div><!-- /row -->
 </div>
-</div><!-- End Panel -->
-</div>
-</div><!-- /row -->
 <?php
 CORE_Render_Footer();
 ?><script>

@@ -11,8 +11,7 @@ CORE_Render_Top("Settings");
 CORE_Render_Navbar();
 CORE_Render_Sidebar();
 ?>
-
-<div class="row" style="padding-left:25px;">   
+<div class="row" style="padding-left:25px;">
 <div class="col-md-10">
  <div class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
@@ -150,8 +149,8 @@ if (isset($_GET['page']) && !empty($_GET['page'])) {
 		  <tr>
             <td>ManageMC_URL_Checks</td>
             <td><center><select onchange="save_form('security', 'Security')" id="ManageMC_URL_Checks" name="ManageMC_URL_Checks">
-					<option value="TRUE" <?php if($config['Max_Login_Errors_Reset'] == 'TRUE'){echo 'selected="selected"';} ?>>TRUE</option>
-					<option value="FALSE" <?php if($config['Max_Login_Errors_Reset'] !== 'TRUE'){echo 'selected="selected"';} ?>>FALSE</option>
+					<option value="TRUE" <?php if($config['ManageMC_URL_Checks'] == 'TRUE'){echo 'selected="selected"';} ?>>TRUE</option>
+					<option value="FALSE" <?php if($config['ManageMC_URL_Checks'] !== 'TRUE'){echo 'selected="selected"';} ?>>FALSE</option>
 				</select>
 			</center></td>
 			<td>Enable URL checking, this will force ManageMC to only run on the domain defined in $config['ManageMC_Domain']</td>

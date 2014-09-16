@@ -8,7 +8,7 @@
     include_once($_SERVER['DOCUMENT_ROOT'] . '/functions/core/user.php');
 //Other
     date_default_timezone_set('Europe/London');
-        $ManageMC_Version = "0.0.11c Pre-Alpha"; //Do not change this. It is used to check your installation is up to date
+        $ManageMC_Version = "0.0.11d Pre-Alpha"; //Do not change this. It is used to check your installation is up to date
 	$con   = mysql_mysqli_connect();
 	$result = mysqli_query($con, "SELECT * FROM settings");
         $config = array();
@@ -37,4 +37,6 @@
             echo '<!-- managemc_debug_error_reporting not set! -->';
             error_reporting(0);
         }
+        global $config;
+    
 ?>
